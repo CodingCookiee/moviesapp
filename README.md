@@ -1,20 +1,19 @@
-# FiverrServices
+# PandaPlay
 
 
 
 
-## [🔗LiveDemo](https://fiverrservices.vercel.app) 
+## [🔗LiveDemo]() 
 
 
-![App Screenshot](./client/public/fiverrservices.png)
+![App Screenshot]()
 
 
 ## Powered By
  - MERN Stack
  - Tailwind
- - Stripe
  - Jwt
  - RESTful Api
- - Docker
+
    
    
