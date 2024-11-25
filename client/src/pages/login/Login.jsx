@@ -35,8 +35,8 @@ const Login = () => {
   return (
     <div className="login flex items-center justify-center">
       <div className="login">
-        <form onSubmit={handleSubmit} className="w-[300px] h-full p-[100px] pl-0 pr-0 flex flex-col gap-5">
-          <h1 className="text-[gray] mb-5 font-light text-3xl">Sign in</h1>
+        <form onSubmit={handleSubmit} className="w-[500px] h-full p-[100px] pl-0 pr-0 flex flex-col gap-5">
+          <h1 className="text-[gray] mb-5 font-light text-3xl self-center">Sign in</h1>
           
           <label htmlFor="identifier" className="text-[gray] text-[18-px]">
             Username or Email
@@ -48,7 +48,8 @@ const Login = () => {
             placeholder="Enter username or email"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}
-            className="p-[20px] border border-solid border-[lightgrey] rounded-md shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
+            className="p-[20px] border border-solid border-[#0c1d22] focus:[#071013] shadow-lg
+            rounded-md appearance-none focus:outline-none focus:ring-1 focus:ring-gray-200"
           />
 
           <label htmlFor="password" className="text-[gray] text-[18-px]">
@@ -61,7 +62,8 @@ const Login = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-[20px] border border-solid border-[lightgrey] rounded-md shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
+              className="w-full p-[20px] border border-solid  rounded-md appearance-none
+               focus:outline-none focus:ring-1 focus:ring-gray-200 border-[#0c1d22] focus:[#071013] shadow-lg"
             />
             <button
               type="button"
@@ -74,7 +76,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="border-none p-5 text-white font-medium bg-[#1dbf73] hover:bg-[#10b981] transition-all rounded-md mt-5 text-[18px] cursor-pointer"
+            className="border-none p-5 text-white font-medium bg-[#d36252] hover:bg-[#a1463a] transition-all rounded-md mt-5 text-[18px] cursor-pointer"
           >
             Login
           </button>

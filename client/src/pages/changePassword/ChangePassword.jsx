@@ -21,15 +21,19 @@ const ChangePassword = () => {
   });
 
   const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+    
     if (password.length < 8) {
       return "Password must be at least 8 characters long";
     }
+    
     if (!passwordRegex.test(password)) {
-      return "Password must contain at least one uppercase letter, one lowercase letter and one number";
+      return "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
+    
     return "";
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -79,7 +83,7 @@ const ChangePassword = () => {
         onSubmit={handleSubmit}
         className="w-[500px] h-screen flex flex-col justify-center gap-5"
       >
-        <h1 className="text-[gray] text-3xl mb-5">Change Password</h1>
+        <h1 className="text-[gray] text-3xl mb-5 self-center">Change Password</h1>
 
         <div className="relative">
           <input
@@ -88,7 +92,8 @@ const ChangePassword = () => {
             placeholder="New Password"
             value={passwords.newPassword}
             onChange={handleChange}
-            className="w-full p-[20px] border border-solid border-[lightgrey] rounded-md shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
+           className="w-full p-[20px] border border-solid  rounded-md appearance-none
+               focus:outline-none focus:ring-1 focus:ring-gray-200 border-[#0c1d22] focus:[#071013] shadow-lg"
           />
           <button
             type="button"
@@ -115,7 +120,8 @@ const ChangePassword = () => {
             placeholder="Confirm New Password"
             value={passwords.confirmPassword}
             onChange={handleChange}
-            className="w-full p-[20px] border border-solid border-[lightgrey] rounded-md shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
+           className="w-full p-[20px] border border-solid  rounded-md appearance-none
+               focus:outline-none focus:ring-1 focus:ring-gray-200 border-[#0c1d22] focus:[#071013] shadow-lg"
           />
           <button
             type="button"
@@ -137,7 +143,7 @@ const ChangePassword = () => {
 
         <button
           type="submit"
-          className="border-none p-5 text-white bg-[#1dbf73] rounded-md hover:bg-[#10b981] font-medium text-lg"
+          className="border-none p-5 text-white bg-[#d36252] hover:bg-[#a1463a]  rounded-md font-medium text-lg"
         >
           Change Password
         </button>

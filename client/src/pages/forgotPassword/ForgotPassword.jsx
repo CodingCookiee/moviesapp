@@ -20,17 +20,18 @@ const ForgotPassword = () => {
   return (
     <div className="flex items-center justify-center">
       <form onSubmit={handleSubmit} className="w-[500px] h-screen flex flex-col justify-center gap-5">
-        <h1 className="text-[gray] text-3xl mb-5">Reset Password</h1>
+        <h1 className="text-[gray] text-3xl mb-5 self-center">Reset Password</h1>
         <input
           type="text"
           placeholder="Email or Username"
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
-          className="p-[20px] border border-solid border-[lightgrey] rounded-md shadow-sm appearance-none focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-200"
+          className="w-full p-[20px] border border-solid  rounded-md appearance-none
+               focus:outline-none focus:ring-1 focus:ring-gray-200 border-[#0c1d22] focus:[#071013] shadow-lg"
         />
         <button 
           type="submit"
-          className="border-none p-5 text-white bg-[#1dbf73] rounded-md hover:bg-[#10b981] font-medium text-lg"
+          className="border-none p-5 text-white bg-[#d36252] hover:bg-[#a1463a] rounded-md font-medium text-lg"
         >
           Continue
         </button>

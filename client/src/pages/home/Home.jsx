@@ -12,19 +12,6 @@ const Home = () => {
   return (
     <div className="home">
       <Featured />
-      <TrustedBy />
-
-      <Slide slidesToShow={Math.min(5, cards.length)}>
-        {cards.map((card) => (
-          <CatCard key={card.id} card={card} />
-        ))}
-      </Slide>
-      <Features />
-      <Slide slidesToShow={Math.min(4, projects.length)}>
-        {projects.map((card) => (
-          <ProjectCard key={card.id} card={card} />
-        ))}
-      </Slide>
     </div>
   );
 };

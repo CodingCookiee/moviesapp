@@ -4,7 +4,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectToDatabase } from './config/database.js';
 import userRoute from './routes/user.route.js';
-import reviewRoute from './routes/review.route.js';
 import authRoute from './routes/auth.route.js';
 // import favorites from './routes/favorites.routes.js';
 // import movies from './routes/movies.routes.js';
@@ -44,7 +43,7 @@ app.get('/health', (req, res) => {
 
 app.listen(port, async () => {
   await connectToDatabase();
-  console.log(`Server running on http://localhost/:${port}`);
+  console.log(`Server running on http://localhost:${port}`);
   console.log(`Backend allowed client: ${process.env.CLIENT_URL}`);
 
 }).on('error', (err) => {
