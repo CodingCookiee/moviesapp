@@ -75,10 +75,12 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 md:py-12 bg-white">
+    <div className="container flex justify-center items-center h-full mx-auto px-4 py-8">
+       <div className="w-[500px] min-h-full border border-solid rounded-md shadow-lg shadow-[#efc949] 
+       flex items-center justify-center px-4 py-8 md:py-12 ">
       <form 
         onSubmit={handleSubmit}
-        className="w-full max-w-[500px] flex flex-col gap-6 md:gap-8"
+        className="w-full max-w-[500px] flex flex-col gap-6 md:gap-8 px-12"
       >
         <h1 className="text-2xl md:text-3xl text-gray-600 font-light text-center mb-4 md:mb-6">
           Change Password
@@ -163,6 +165,7 @@ const ChangePassword = () => {
           </span>
         )}
       </form>
+    </div>
     </div>
   );
 };

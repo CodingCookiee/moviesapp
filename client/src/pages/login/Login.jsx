@@ -31,8 +31,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 md:py-12">
-      <div className="w-full max-w-[500px]">
+    <div className="container flex justify-center items-center h-full mx-auto px-4 py-8">
+       <div className="w-[500px] min-h-full border border-solid rounded-md shadow-lg shadow-[#efc949] 
+       flex items-center justify-center px-4 py-8 md:py-12 ">
+      <div className="w-full max-w-[350px]">
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 md:gap-8">
           <h1 className="text-2xl md:text-3xl text-gray-600 font-light text-center mb-4 md:mb-6">
             Sign in
@@ -107,6 +109,7 @@ const Login = () => {
           </Link>
         </form>
       </div>
+    </div>
     </div>
   );
 };

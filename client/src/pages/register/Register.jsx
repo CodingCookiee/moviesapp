@@ -110,8 +110,11 @@ const Register = () => {
   };
 
   return (
-    <div className="register min-h-screen flex items-center justify-center px-4 py-8 md:py-12">
-      <form className="w-full max-w-[500px] flex flex-col gap-8 md:gap-[120px]" onSubmit={handleSubmit}>
+    <div className="container flex justify-center items-center h-full mx-auto px-4 py-8">
+       <div className="register w-[550px] min-h-full border border-solid rounded-md shadow-lg shadow-[#efc949] 
+       flex items-center justify-center px-4 py-8 md:py-12">
+      <form className="w-full max-w-[500px] flex flex-col
+       gap-8 md:gap-[120px] px-14" onSubmit={handleSubmit}>
         <div className="flex-1 flex flex-col gap-4 md:gap-6">
           <h1 className="text-2xl md:text-3xl text-gray-600 font-light text-center mb-4 md:mb-6">
             Sign up
@@ -212,6 +215,7 @@ const Register = () => {
           </button>
         </div>
       </form>
+    </div>
     </div>
   );
 };
