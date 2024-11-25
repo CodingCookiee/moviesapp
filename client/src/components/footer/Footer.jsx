@@ -1,98 +1,62 @@
-import './footer.css'
-import React from 'react';
+import "./footer.css";
+import React from "react";
 
 const Footer = () => {
-    return (
-        <div className="footer flex justify-center m-[50px] ml-0 mr-0">
-      <div className="container w-[1400px]">
-        <div className="top flex justify-between">
+  return (
+    <div className="footer flex flex-col w-full justify-center my-[50px] mx-0">
+      <div className="top-container w-full max-w-[1400px] self-center flex flex-col md:flex-row items-start md:items-center justify-between gap-10 px-4">
+        <div className="left flex flex-col sm:flex-row w-full md:w-[800px] justify-between gap-8 md:gap-0">
           <div className="item flex flex-col gap-5">
-            <h2 className='text-md font-semibold '>Categories</h2>
-            <span className='font-light text-[#555]'>Graphics & Design</span>
-            <span className='font-light text-[#555]'>Digital Marketing</span>
-            <span className='font-light text-[#555]'>Writing & Translation</span>
-            <span className='font-light text-[#555]'>Video & Animation</span>
-            <span className='font-light text-[#555]'>Music & Audio</span>
-            <span className='font-light text-[#555]'>Programming & Tech</span>
-            <span className='font-light text-[#555]'>Data</span>
-            <span className='font-light text-[#555]'>Business</span>
-            <span className='font-light text-[#555]'>Lifestyle</span>
-            <span className='font-light text-[#555]'>Photography</span>
-            <span className='font-light text-[#555]'>Sitemap</span>
+            <h2 className="text-md font-semibold">About</h2>
+            <span className="font-light text-[#555] cursor-pointer">Partnerships</span>
+            <span className="font-light text-[#555] cursor-pointer">Privacy Policy</span>
+            <span className="font-light text-[#555] cursor-pointer">Terms of Service</span>
           </div>
           <div className="item flex flex-col gap-5">
-            <h2 className='text-md font-semibold '>About</h2>
-            <span className='font-light text-[#555]'>Press & News</span>
-            <span className='font-light text-[#555]'>Partnerships</span>
-            <span className='font-light text-[#555]'>Privacy Policy</span>
-            <span className='font-light text-[#555]'>Terms of Service</span>
-            <span className='font-light text-[#555]'>Intellectual Property Claims</span>
-            <span className='font-light text-[#555]'>Investor Relations</span>
-            <span className='font-light text-[#555]'>Contact Sales</span>
+            <h2 className="text-md font-semibold">Links</h2>
+            <span className="font-light text-[#555] cursor-pointer">Featured</span>
+            <span className="font-light text-[#555] cursor-pointer">Trust & Safety</span>
+            <span className="font-light text-[#555] cursor-pointer">How to Watch</span>
+            <span className="font-light text-[#555] cursor-pointer">Updates</span>
           </div>
           <div className="item flex flex-col gap-5">
-            <h2 className='text-md font-semibold'>Support</h2>
-            <span className='font-light text-[#555]'>Help & Support</span>
-            <span className='font-light text-[#555]'>Trust & Safety</span>
-            <span className='font-light text-[#555]'>Selling on fiverr</span>
-            <span className='font-light text-[#555]'>Buying on fiverr</span>
-          </div>
-          <div className="item flex flex-col gap-5">
-            <h2 className='text-md font-semibold'>Community</h2>
-            <span className='font-light text-[#555]'>Customer Success Stories</span>
-            <span className='font-light text-[#555]'>Community hub</span>
-            <span className='font-light text-[#555]'>Forum</span>
-            <span className='font-light text-[#555]'>Events</span>
-            <span className='font-light text-[#555]'>Blog</span>
-            <span className='font-light text-[#555]'>Influencers</span>
-            <span className='font-light text-[#555]'>Affiliates</span>
-            <span className='font-light text-[#555]'>Podcast</span>
-            <span className='font-light text-[#555]'>Invite a Friend</span>
-            <span className='font-light text-[#555]'>Become a Seller</span>
-            <span className='font-light text-[#555]'>Community Standards</span>
-          </div>
-          <div className="item flex flex-col gap-5">
-            <h2 className='text-md font-semibold'>More From Fiverr</h2>
-            <span className='font-light text-[#555]'>fiverr Business</span>
-            <span className='font-light text-[#555]'>fiverr Pro</span>
-            <span className='font-light text-[#555]'>fiverr Logo Maker</span>
-            <span className='font-light text-[#555]'>fiverr Guides</span>
-            <span className='font-light text-[#555]'>Get Inspired</span>
-            <span className='font-light text-[#555]'>fiverr Select</span>
-            <span className='font-light text-[#555]'>ClearVoice</span>
-            <span className='font-light text-[#555]'>fiverr Workspace</span>
-            <span className='font-light text-[#555]'>Learn</span>
-            <span className='font-light text-[#555]'>Working Not Working</span>
+            <h2 className="text-md font-semibold">Social</h2>
+            <div className="social flex flex-col gap-5">
+              <span className="flex items-center font-light text-[#555] cursor-pointer">
+                Facebook
+                <img src="/facebook.png" alt="" className="cursor-pointer h-5 w-5 ml-2"/>
+              </span>
+              <span className="flex items-center font-light text-[#555] cursor-pointer">
+                Instagram
+                <img src="/instagram.png" alt="" className="cursor-pointer h-5 w-5 ml-2"/>
+              </span>
+            </div>
           </div>
         </div>
-        <hr className='m-[50px] ml-0 mr-0 h-0 border border-solid border-[#e5e5e5]' />
-        <div className="bottom flex items-center justify-between">
-          <div className="left w-max flex items-center justify-center gap-2">
-            <h2 className='text-xl font-bold text-[#555]'>fiverr</h2>
-            <span className='whitespace-nowrap text-sm'>© fiverr International Ltd. 2023</span>
-          </div>
-          <div className="right w-max flex items-center gap-7">
-            <div className="social flex gap-5">
-              <img src="/twitter.png" alt="" />
-              <img src="/facebook.png" alt="" />
-              <img src="/linkedin.png" alt="" />
-              <img src="/pinterest.png" alt="" />
-              <img src="/instagram.png" alt="" />
-            </div>
-            <div className="link flex items-center gap-2.5">
-              <img src="/language.png" alt="" />
-              <span>English</span>
-            </div>
-            <div className="link flex items-center gap-2.5 ">
-              <img src="/coin.png" alt="" />
-              <span>USD</span>
-            </div>
-            <img src="/accessibility.png" alt="" />
-          </div>
+        <div className="right flex items-center flex-col gap-5 w-full md:w-auto">
+          <h2 className="text-xl font-bold text-[#555] self-start">
+            <span className="text-[#efc949]">Panda</span>Play
+          </h2>
+          <p className="text-sm text-[#555] self-start text-justify w-full md:w-[300px]">
+            OnionPlay does not store any files itself, we only link to media
+            which is hosted on 3rd party services. PandaPlay is ADS-FREE and
+            always will Be, Be Aware of clones or fake copies!
+          </p>
+        </div>
+      </div>
+      <hr className="my-[50px] mx-0 shadow-lg h-0 border border-solid border-[#e5e5e5]" />
+      <div className="bottom-container self-center flex flex-col sm:flex-row items-center justify-between w-full max-w-[1400px] px-4 gap-4">
+        <div>
+          <span className="text-sm text-[#555]">© 2023 PandaPlay. All rights reserved.</span>
+        </div>
+        <div>
+          <button className="scroll-up outline-none hover:rotate-180 transition-transform duration-300" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <img src="/scroll.png" alt="" className="h-10 w-10"/>
+          </button>
         </div>
       </div>
     </div>
-    );
-}
+  );
+};
 
 export default Footer;

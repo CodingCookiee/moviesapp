@@ -18,24 +18,44 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <form onSubmit={handleSubmit} className="w-[500px] h-screen flex flex-col justify-center gap-5">
-        <h1 className="text-[gray] text-3xl mb-5 self-center">Reset Password</h1>
-        <input
-          type="text"
-          placeholder="Email or Username"
-          value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
-          className="w-full p-[20px] border border-solid  rounded-md appearance-none
-               focus:outline-none focus:ring-1 focus:ring-gray-200 border-[#0c1d22] focus:[#071013] shadow-lg"
-        />
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 md:py-12 bg-white">
+      <form 
+        onSubmit={handleSubmit} 
+        className="w-full max-w-[500px] flex flex-col gap-6 md:gap-8"
+      >
+        <h1 className="text-2xl md:text-3xl text-gray-600 font-light text-center mb-4 md:mb-6">
+          Reset Password
+        </h1>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="identifier" className="text-gray-600 text-base md:text-lg">
+            Email or Username
+          </label>
+          <input
+            type="text"
+            id="identifier"
+            placeholder="Enter your email or username"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            className="w-full p-4 md:p-5 border border-solid border-[#0c1d22] rounded-md
+              focus:outline-none focus:ring-1 focus:ring-gray-200 shadow-lg"
+          />
+        </div>
+
         <button 
           type="submit"
-          className="border-none p-5 text-white bg-[#d36252] hover:bg-[#a1463a] rounded-md font-medium text-lg"
+          className="w-full p-4 md:p-5 mt-4 text-white font-medium bg-[#d36252] 
+            hover:bg-[#a1463a] transition-colors rounded-md text-base md:text-lg 
+            cursor-pointer shadow-md"
         >
           Continue
         </button>
-        {error && <span className="self-center font-base text-red-500 text-md">{error}</span>}
+
+        {error && (
+          <span className="text-red-500 text-center text-sm md:text-base mt-2">
+            {error}
+          </span>
+        )}
       </form>
     </div>
   );

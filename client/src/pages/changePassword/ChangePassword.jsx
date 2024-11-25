@@ -33,7 +33,6 @@ const ChangePassword = () => {
     
     return "";
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,9 +65,7 @@ const ChangePassword = () => {
         userId,
         newPassword: passwords.newPassword,
       });
-      setSuccessMessage(
-        "Password changed successfully. Redirecting to login page..."
-      );
+      setSuccessMessage("Password changed successfully. Redirecting to login page...");
       setTimeout(() => {
         navigate("/login");
       }, 2000);
@@ -78,89 +75,91 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <form
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 md:py-12 bg-white">
+      <form 
         onSubmit={handleSubmit}
-        className="w-[500px] h-screen flex flex-col justify-center gap-5"
+        className="w-full max-w-[500px] flex flex-col gap-6 md:gap-8"
       >
-        <h1 className="text-[gray] text-3xl mb-5 self-center">Change Password</h1>
+        <h1 className="text-2xl md:text-3xl text-gray-600 font-light text-center mb-4 md:mb-6">
+          Change Password
+        </h1>
 
-        <div className="relative">
-          <input
-            type={showPasswords.newPassword ? "text" : "password"}
-            name="newPassword"
-            placeholder="New Password"
-            value={passwords.newPassword}
-            onChange={handleChange}
-           className="w-full p-[20px] border border-solid  rounded-md appearance-none
-               focus:outline-none focus:ring-1 focus:ring-gray-200 border-[#0c1d22] focus:[#071013] shadow-lg"
-          />
-          <button
-            type="button"
-            onClick={() =>
-              setShowPasswords((prev) => ({
-                ...prev,
-                newPassword: !prev.newPassword,
-              }))
-            }
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-          >
-            {showPasswords.newPassword ? (
-              <FaEyeSlash size={20} />
-            ) : (
-              <FaEye size={20} />
-            )}
-          </button>
+        {/* New Password Field */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="newPassword" className="text-gray-600 text-base md:text-lg">
+            New Password
+          </label>
+          <div className="relative">
+            <input
+              type={showPasswords.newPassword ? "text" : "password"}
+              name="newPassword"
+              id="newPassword"
+              placeholder="Enter new password"
+              value={passwords.newPassword}
+              onChange={handleChange}
+              className="w-full p-4 md:p-5 border border-solid border-[#0c1d22] rounded-md
+                focus:outline-none focus:ring-1 focus:ring-gray-200 shadow-lg"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPasswords(prev => ({...prev, newPassword: !prev.newPassword}))}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 
+                hover:text-gray-700 transition-colors"
+            >
+              {showPasswords.newPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+            </button>
+          </div>
         </div>
 
-        <div className="relative">
-          <input
-            type={showPasswords.confirmPassword ? "text" : "password"}
-            name="confirmPassword"
-            placeholder="Confirm New Password"
-            value={passwords.confirmPassword}
-            onChange={handleChange}
-           className="w-full p-[20px] border border-solid  rounded-md appearance-none
-               focus:outline-none focus:ring-1 focus:ring-gray-200 border-[#0c1d22] focus:[#071013] shadow-lg"
-          />
-          <button
-            type="button"
-            onClick={() =>
-              setShowPasswords((prev) => ({
-                ...prev,
-                confirmPassword: !prev.confirmPassword,
-              }))
-            }
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-          >
-            {showPasswords.confirmPassword ? (
-              <FaEyeSlash size={20} />
-            ) : (
-              <FaEye size={20} />
-            )}
-          </button>
+        {/* Confirm Password Field */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="confirmPassword" className="text-gray-600 text-base md:text-lg">
+            Confirm Password
+          </label>
+          <div className="relative">
+            <input
+              type={showPasswords.confirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              id="confirmPassword"
+              placeholder="Confirm new password"
+              value={passwords.confirmPassword}
+              onChange={handleChange}
+              className="w-full p-4 md:p-5 border border-solid border-[#0c1d22] rounded-md
+                focus:outline-none focus:ring-1 focus:ring-gray-200 shadow-lg"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPasswords(prev => ({...prev, confirmPassword: !prev.confirmPassword}))}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 
+                hover:text-gray-700 transition-colors"
+            >
+              {showPasswords.confirmPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+            </button>
+          </div>
         </div>
 
         <button
           type="submit"
-          className="border-none p-5 text-white bg-[#d36252] hover:bg-[#a1463a]  rounded-md font-medium text-lg"
+          className="w-full p-4 md:p-5 mt-4 text-white font-medium bg-[#d36252] 
+            hover:bg-[#a1463a] transition-colors rounded-md text-base md:text-lg 
+            cursor-pointer shadow-md"
         >
           Change Password
         </button>
 
-        {successMessage && (
-          <span className="text-slate-800 text-md self-center font-thin">
-            {successMessage}
-          </span>
-        )}
         {validationError && (
-          <span className="self-center font-base text-red-500 text-md">
+          <span className="text-red-500 text-center text-sm md:text-base">
             {validationError}
           </span>
         )}
         {error && (
-          <span className="self-center font-base text-red-500 text-md">
+          <span className="text-red-500 text-center text-sm md:text-base">
             {error}
+          </span>
+        )}
+        {successMessage && (
+          <span className="text-green-600 text-center text-sm md:text-base">
+            {successMessage}
           </span>
         )}
       </form>
