@@ -1,8 +1,7 @@
-import "./featured.css";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-const Featured = () => {
+const Hero = () => {
   const [input, setInput] = useState("");
   const navigate = useNavigate();
 
@@ -57,4 +56,4 @@ const Featured = () => {
   );
 };
 
-export default Featured;
+export default Hero;

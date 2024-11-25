@@ -43,9 +43,9 @@ const Navbar = () => {
           <div className="logo">
             <Link to="/" className="flex items-center justify-center gap-2.5">
               <img src="/Movie.png" alt="" className="w-10 h-10 md:w-14 md:h-14 object-cover" />
-              <span className="tag font-bold text-xl md:text-2xl">
-                <span className="text-[#efc949]">Panda</span>Play
-              </span>
+              <Link className="tag font-bold text-xl md:text-2xl">
+                <Link className="text-[#efc949]">Panda</Link>Play
+              </Link>
             </Link>
           </div>
 
@@ -61,9 +61,9 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex links gap-6 items-center font-normal">
-            <span className="hover:text-[#efc949] cursor-pointer">Tv Shows</span>
-            <span className="hover:text-[#efc949] cursor-pointer">Movies</span>
-            <span className="hover:text-[#efc949] cursor-pointer">Top 50</span>
+            <Link className="hover:text-[#efc949] cursor-pointer">Tv Shows</Link>
+            <Link to='/movies' className="hover:text-[#efc949] cursor-pointer">Movies</Link>
+            <Link className="hover:text-[#efc949] cursor-pointer">Top 50</Link>
             <div className="relative">
               <button
                 className="font-normal hover:text-[#efc949] cursor-pointer"
@@ -101,7 +101,7 @@ const Navbar = () => {
                 alt=""
                 className="w-12 h-12 rounded-full object-cover mb-2.5"
               />
-              <span className="text">{currentUser?.username}</span>
+              <Link className="text">{currentUser?.username}</Link>
              </div>
               {open && (
                 <div className="options absolute top-12 right-0 bg-white p-5 rounded-lg flex flex-col gap-2 border border-solid border-gray-300 text-slate-500 w-[250px]">
@@ -127,9 +127,9 @@ const Navbar = () => {
       {mobileMenu && (
         <div className="md:hidden w-full bg-white text-black p-4 shadow-lg">
           <div className="flex flex-col gap-4">
-            <span className="hover:text-[#efc949] cursor-pointer">Tv Shows</span>
-            <span className="hover:text-[#efc949] cursor-pointer">Movies</span>
-            <span className="hover:text-[#efc949] cursor-pointer">Top 50</span>
+            <Link to='/movies' className="hover:text-[#efc949] cursor-pointer">Tv Shows</Link>
+            <Link className="hover:text-[#efc949] cursor-pointer">Movies</Link>
+            <Link className="hover:text-[#efc949] cursor-pointer">Top 50</Link>
             <button
               className="font-normal hover:text-[#efc949] cursor-pointer text-left"
               onClick={() => setOpenGenres(!openGenres)}
