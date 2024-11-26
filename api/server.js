@@ -39,7 +39,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-
+app.use(errorHandler);
 
 app.listen(port, async () => {
   await connectToDatabase();

@@ -94,7 +94,7 @@ const Login = () => {
           </button>
 
           {error && (
-            <span className="text-red-500 text-center text-sm md:text-base">
+            <span className="text-red-500 text-center text-sm md:text-base self-center">
               {error}
             </span>
           )}

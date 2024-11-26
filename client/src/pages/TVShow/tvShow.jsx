@@ -64,7 +64,10 @@ const TvShow = () => {
             alt={show.name}
             className="w-full rounded-lg shadow-lg"
           />
-          <button className="w-full mt-4 bg-yellow-400 hover:bg-[#efc949] text-white py-3 px-6 rounded-lg transition-colors">
+          <button className="w-full mt-4 bg-yellow-400 hover:bg-[#efc949]
+           text-white py-3 px-6 rounded-lg transition-colors"
+           onClick={() => navigate(`/episode/${show.id}/1/1`)}
+           >
             Watch Now
           </button>
         </div>
