@@ -18,7 +18,9 @@ const Hero = () => {
             <span className="text-yellow-400 hover:text-[#efc949]">Panda</span>Play
           </h1>
           
-          <div className="search self-center flex items-center justify-between rounded-md overflow-hidden p-1 px-2 w-full md:w-4/5 shadow-lg hover:shadow-[#efc949] bg-white">
+          <div className="search self-center flex items-center justify-between rounded-md 
+          overflow-hidden p-1 px-2 w-full md:w-4/5 shadow-lg 
+          hover:shadow-[0_0_7px_5px_#efc949] transition-shadow duration-300 bg-white">
             <input
               onChange={(e) => setInput(e.target.value)}
               type="text"

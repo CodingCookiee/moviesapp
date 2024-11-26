@@ -9,8 +9,8 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
   return (
     <Link to={`/movie/${movie.imdbID}`} className={cardClassName}>
       <div
-        className={`movie-card h-full border border-solid border-[rgb(228, 228, 228)] cursor-pointer
-             rounded-lg overflow-hidden shadow-md hover:shadow-2xl hover:shadow-yellow-400 relative `}
+        className={`movie-card border border-solid border-[rgb(228, 228, 228)] cursor-pointer
+             rounded-lg overflow-hidden shadow-md  relative hover:shadow-[0_0_20px_10px_#efc949] transition-shadow duration-300`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -50,7 +50,9 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
             </div>
           </div>
         </div>
-        <div className="info p-4 flex flex-col justify-between">
+        </div>
+        <div className="info">
+        <div className="p-4 flex flex-col -gap-1 justify-between border-none shadow-none bg-transparent">
           <h3 className="text-lg font-semibold mb-2 line-clamp-2">
             {movie.Title}
           </h3>
