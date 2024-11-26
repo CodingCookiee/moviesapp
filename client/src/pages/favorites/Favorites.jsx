@@ -13,7 +13,9 @@ const Favorites = () => {
   const fetchFavorites = async () => {
     try {
       const response = await newRequest.get("/favorites");
-      setFavorites(response.data);
+      // Filter only favorites with favoriteState true
+      const activeFavorites = response.data.filter(fav => fav.favoriteState);
+      setFavorites(activeFavorites);
     } catch (err) {
       console.error(err);
     } finally {
@@ -25,20 +27,30 @@ const Favorites = () => {
     fetchFavorites();
   }, []);
 
-  const handleFavoriteUpdate = () => {
-    fetchFavorites();
+  const handleFavoriteRemove = async (itemId, type) => {
+    try {
+      const response = await newRequest.post('/favorites/toggle', {
+        itemId,
+        type
+      });
+      if (!response.data.isFavorite) {
+        // Immediately remove from UI
+        setFavorites(prev => prev.filter(fav => 
+          type === 'movie' ? fav.movieId !== itemId : fav.showId !== itemId
+        ));
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
-
 
   const getFavoriteContent = (favorite) => {
     if (favorite.type === 'movie') {
       return movies.find(movie => movie.imdbID === favorite.movieId);
     } else {
-     
       return tvShows.find(show => show.id === parseInt(favorite.showId));
     }
   };
-  
 
   if (loading) {
     return (
@@ -60,7 +72,6 @@ const Favorites = () => {
           </div>
         </div>
 
-        {/* View Toggle */}
         <div className="flex justify-end p-4 sticky top-0 bg-white z-10">
           <button
             onClick={() => setViewType("grid")}
@@ -102,7 +113,7 @@ const Favorites = () => {
                   movie={content}
                   viewType={viewType}
                   isFavorite={true}
-                  onFavoriteUpdate={handleFavoriteUpdate}
+                  onFavoriteToggle={() => handleFavoriteRemove(favorite.movieId, 'movie')}
                 />
               ) : (
                 <TvShowCard
@@ -110,7 +121,7 @@ const Favorites = () => {
                   show={content}
                   viewType={viewType}
                   isFavorite={true}
-                  onFavoriteUpdate={handleFavoriteUpdate}
+                  onFavoriteToggle={() => handleFavoriteRemove(favorite.showId, 'show')}
                 />
               );
             })}
