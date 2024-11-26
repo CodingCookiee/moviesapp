@@ -35,7 +35,7 @@ const Footer = () => {
         </div>
         <div className="right flex items-center flex-col gap-5 w-full md:w-auto">
           <h2 className="text-xl font-bold text-[#555] self-start">
-            <span className="text-[#efc949]">Panda</span>Play
+            <span className="text-yellow-400">Panda</span>Play
           </h2>
           <p className="text-sm text-[#555] self-start text-justify w-full md:w-[300px]">
             OnionPlay does not store any files itself, we only link to media

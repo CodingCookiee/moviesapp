@@ -44,7 +44,7 @@ const Navbar = () => {
             <Link to="/" className="flex items-center justify-center gap-2.5">
               <img src="/Movie.png" alt="" className="w-10 h-10 md:w-14 md:h-14 object-cover" />
               <Link className="tag font-bold text-xl md:text-2xl">
-                <Link className="text-[#efc949]">Panda</Link>Play
+                <Link className="text-yellow-400 hover:text-[#efc949]">Panda</Link>Play
               </Link>
             </Link>
           </div>

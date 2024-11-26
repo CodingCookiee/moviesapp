@@ -57,7 +57,7 @@ const Home = () => {
         <div className="mb-12">
         <div className="flex items-center gap-2.5 ml-4 mb-6">
           <div className="">
-            <div className="h-[40px]  bg-[#efc949] w-[10px]"></div>
+            <div className="h-[40px]  bg-yellow-400 w-[10px]"></div>
           </div>
           <h2 className="text-2xl font-bold mb-1">Featured Movies</h2>
         </div>

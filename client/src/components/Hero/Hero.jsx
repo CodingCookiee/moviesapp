@@ -15,7 +15,7 @@ const Hero = () => {
       <div className="featured__container flex items-center w-full max-w-[1400px]">
         <div className="top flex flex-col gap-8 md:gap-14 w-full">
           <h1 className="text-4xl md:text-6xl font-bold text-center">
-            <span className="text-[#efc949]">Panda</span>Play
+            <span className="text-yellow-400 hover:text-[#efc949]">Panda</span>Play
           </h1>
           
           <div className="search self-center flex items-center justify-between rounded-md overflow-hidden p-1 px-2 w-full md:w-4/5 shadow-lg hover:shadow-[#efc949] bg-white">
@@ -37,7 +37,7 @@ const Hero = () => {
 
       <div className="flex flex-col gap-4 md:gap-2.5 w-full md:w-4/5 px-4">
         <h1 className="text-2xl md:text-4xl font-semibold text-center">
-          <span className="text-[#efc949]">Panda</span>Play – The Best Place to
+          <span className="text-yellow-400 hover:text-[#efc949]">Panda</span>Play – The Best Place to
           Watch <i>Free Movies</i> and <i>TVShows</i> Online
         </h1>
         
@@ -46,9 +46,9 @@ const Hero = () => {
           favorite flicks. Would you like to get an exclusive access to all the
           major blockbusters of the recent years? Everybody wants to see a great
           movie with his friends and family every once in a while and{" "}
-          <span className="text-[#efc949]">Panda</span>Play is the exact place for
+          <span className="text-yellow-400 hover:text-[#efc949]">Panda</span>Play is the exact place for
           that! Start by Searching or by Navigating the
-          <span className="text-[#efc949] ml-1">Panda</span>Play Top Menu, You
+          <span className=" text-yellow-400 hover:text-[#efc949] ml-1">Panda</span>Play Top Menu, You
           will find something to Watch in a matter of seconds!
         </p>
       </div>
