@@ -108,7 +108,7 @@ const Favorites = () => {
             {favorites.map((favorite) => {
               const content = getFavoriteContent(favorite);
               if (!content) return null;
-
+{/* FIXME : is featured tag is not worling: context switching   */}
               return favorite.type === 'movie' ? (
                 <MovieCard
                   key={favorite.movieId}
