@@ -10,6 +10,11 @@ import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 import Movies from "./pages/movies/Movies";
 import Movie from "./pages/movie/Movie";
 import Favorites from "./pages/favorites/Favorites";
+import Genre from "./pages/genre/Genre";
+import Top50 from "./pages/Top50/Top50";
+import TvShows from "./pages/TvShows/tvShows";
+import TvShow from "./pages/TVShow/tvShow";
+import Episode from "./pages/Episode/Episode";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -56,6 +61,26 @@ const App = () => {
         {
           path: "/favorites",
           element: <Favorites />,
+        },
+        {
+          path: "/genre/:genreName",
+          element: <Genre />,
+        },
+        {
+          path: "/top50",
+          element: <Top50 />,
+        },
+        {
+          path: "/tvshows",
+          element: <TvShows />,
+        },
+        {
+          path: "/tvshow/:id",
+          element: <TvShow />,
+        },
+        {
+          path: "/episode/:showId/:seasonNum/:episodeNum",
+          element: <Episode />,
         },
         {
           path: "/login",

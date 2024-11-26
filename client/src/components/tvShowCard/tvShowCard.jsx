@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 
-const MovieCard = ({ movie, viewType, isFeatured }) => {
+const MovieCard = ({ show, viewType, isFeatured }) => {
   const [isHovered, setIsHovered] = useState();
+
+  if(!show) return null;
+
   const cardClassName =
     viewType === "grid" ? "w-full sm:w-1/2 lg:w-1/4 p-4" : "w-3/5 h-2/3 self-center mb-4 ";
 
   return (
-    <Link to={`/movie/${movie.imdbID}`} className={cardClassName}>
+    <Link to={`/tvshow/${show.id}`} className={cardClassName}>
       <div
         className={`movie-card border border-solid border-[rgb(228, 228, 228)] cursor-pointer rounded-lg 
         overflow-hidden shadow-md  relative hover:shadow-[0_0_20px_10px_#efc949] transition-shadow duration-300`}
@@ -16,9 +19,9 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
       >
         <div className="aspect-[2/3] relative">
           <img
-            src={movie.Poster}
-            alt={movie.Title}
-            className="absolute w-full h-full object-cover"
+            src={`https://image.tmdb.org/t/p/w500${show.poster_path}`} 
+                        alt={show.name} 
+                        className='absolute w-full h-full object-cover'
           />
           {/* Play Button Overlay */}
           {isHovered && (
@@ -46,7 +49,8 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
           <div className="absolute bottom-2 right-2 ">
             <div className="flex items-center bg-black/70 text-yellow-400 px-3 py-1 rounded">
               <img src="/star.png" alt="star" className="w-4 h-4 mr-1" />
-              <span>{movie.imdbRating}</span>
+              {/* FIXME */}
+              <span>{show.vote_average?.toFixed(1)}</span>
             </div>
           </div>
         </div>
@@ -54,9 +58,9 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
         <div className="info">
         <div className="p-4 flex flex-col -gap-1 justify-between border-none shadow-none bg-transparent">
           <h3 className="text-lg font-semibold mb-2 line-clamp-2">
-            {movie.Title}
+            {show.name}
           </h3>
-          <p className="text-gray-600 mb-2 line-clamp-1">{movie.Genre}</p>
+          <p className="text-gray-600 mb-2 line-clamp-1">{show.genres?.map(g => g.name).join(', ')}</p>
           <div className="flex justify-between items-center">
             <span className="text-lg font-bold">$9.99</span>
           </div>

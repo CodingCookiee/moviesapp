@@ -2,7 +2,6 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { movies } from "../../../data.js";
-console.log(movies);
 
 const Movie = () => {
   const navigate = useNavigate();
