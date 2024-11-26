@@ -76,9 +76,10 @@ const TvShow = () => {
         <div className="md:col-span-2">
           <h1 className="text-4xl font-bold mb-4">{show.name}</h1>
 
-          <div className="flex items-center gap-4 mb-6">
-            <div className="flex items-center justify-center gap-5">
-              <div className="flex items-center bg-black/10 px-3 py-1 rounded">
+          <div className="flex  items-center gap-4 mb-6">
+            <div className="flex flex-col items-center justify-center gap-5">
+            <div className="flex items-center self-start gap-5">
+            <div className="flex items-center bg-black/10 px-3 py-1 rounded">
                 <img src="/star.png" alt="rating" className="w-5 h-5 mr-2" />
                 <span className="text-yellow-400 font-bold">
                   {show.vote_average?.toFixed(1)}
@@ -88,7 +89,8 @@ const TvShow = () => {
               <span className="text-gray-600">
                 {show.number_of_seasons} Seasons
               </span>
-              <div className="flex item-center justify-center gap-2 flex-wrap">
+            </div>
+              <div className="flex item-center self-start gap-2 flex-wrap">
                 <span className="text-yellow-400 text-2xl font-bold mr-2.5">
                   |
                 </span>

@@ -72,7 +72,8 @@ const Movie = () => {
           <h1 className="text-4xl font-bold mb-4">{movie.Title}</h1>
 
           <div className="flex items-center gap-4 mb-6">
-          <div className="flex items-center justify-center gap-5">
+          <div className="flex flex-col items-center gap-5">
+          <div className="flex items-center self-start gap-4">
           <div className="flex items-center bg-black/10 px-3 py-1 rounded">
               <img src="/star.png" alt="rating" className="w-5 h-5 mr-2" />
               <span className="text-yellow-400 font-bold">
@@ -81,7 +82,8 @@ const Movie = () => {
             </div>
             <span className="text-gray-600">{movie.Year}</span>
             <span className="text-gray-600">{movie.Runtime} </span>
-            <div className="flex item-center justify-center gap-2 flex-wrap">
+          </div>
+            <div className="flex item-center self-start gap-2 flex-wrap">
               <span className="text-yellow-400 text-2xl font-bold mr-2.5">
                 |{" "}
               </span>

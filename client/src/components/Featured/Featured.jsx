@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import MovieCard from "../movieCard/movieCard";
+import TvShowCard from "../tvShowCard/tvShowCard";  
 import { movies } from "../../../data.js";
+import { tvShows } from '../../../tvs.js'
 
 const Featured = () => {
   const [viewType, setViewType] = useState("grid");
   const mostWatched = movies.slice(0, 12);
   const latestMovies = movies.slice(12, 24);
-  const latestSeasons = movies.slice(24, 40);
+  const latestSeasons = tvShows.slice(0, 16);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -85,10 +87,10 @@ const Featured = () => {
         <div
           className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
         >
-          {latestSeasons.map((movie, index) => (
-            <MovieCard
-              key={movie.imdbID || index}
-              movie={movie}
+          {latestSeasons.map((show, index) => (
+            <TvShowCard
+              key={show.id || index}
+              show={show}
               viewType={viewType}
               isFeatured={false}
             />
