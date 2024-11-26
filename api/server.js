@@ -5,8 +5,7 @@ import dotenv from 'dotenv';
 import { connectToDatabase } from './config/database.js';
 import userRoute from './routes/user.route.js';
 import authRoute from './routes/auth.route.js';
-// import favorites from './routes/favorites.routes.js';
-// import movies from './routes/movies.routes.js';
+import favoritesRoute from './routes/favorites.route.js';
 import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler.js';
 
@@ -15,6 +14,8 @@ dotenv.config();
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const app = express();
+app.use(express.json()); 
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -25,12 +26,11 @@ app.use(
   })
 );
 
-app.use(express.json()); 
-app.use(cookieParser());
 
 // Routes
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
+app.use('/api/favorites', favoritesRoute);
 // Add this near your other routes
 app.get('/health', (req, res) => {
   res.status(200).json({ 

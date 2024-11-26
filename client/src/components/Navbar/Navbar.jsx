@@ -131,19 +131,19 @@ const Navbar = () => {
                   alt=""
                   className="w-12 h-12 rounded-full object-cover mb-2.5"
                 />
-                <Link className="text">{currentUser?.username}</Link>
+                <div className="text">{currentUser?.username}</div>
               </div>
               {open && (
                 <div className="options absolute top-12 right-0 bg-white p-5 rounded-lg flex flex-col gap-2 border border-solid border-gray-300 text-slate-500 w-[250px]">
                   <Link
-                    to="/favorite"
-                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                    to="/favorites"
+                    className="px-4 py-2 text-gray-700 hover:bg-yellow-400 rounded"
                   >
                     Favorites
                   </Link>
                   <Link
                     onClick={handleLogout}
-                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                    className="px-4 py-2 text-gray-700 hover:bg-yellow-400 rounded"
                   >
                     Log Out
                   </Link>
@@ -152,10 +152,10 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="links flex gap-6 items-center font-normal">
-              <Link to="/login" className="link">
+              <Link to="/login" className="link hover:text-yellow-400">
                 Sign in
               </Link>
-              <Link to="/register" className="link">
+              <Link to="/register" className="link hover:text-yellow-400">
                 Sign up
               </Link>
             </div>
@@ -192,7 +192,7 @@ const Navbar = () => {
                   <Link
                     key={genre}
                     to={`/genre/${genre}`}
-                    className="w-[calc(50%-10px)] px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded capitalize"
+                    className="w-[calc(50%-10px)] px-3 py-2 text-sm text-gray-700 hover:bg-yellow-400 rounded capitalize"
                   >
                     {genre}
                   </Link>
@@ -201,19 +201,19 @@ const Navbar = () => {
             )}
             {currentUser ? (
               <>
-                <Link to="/favorite" className="hover:text-yellow-400">
+                <Link to="/favorite" className=" hover:bg-yellow-400 text-left">
                   Favorites
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="hover:text-yellow-400 text-left"
+                  className="hover:bg-yellow-400 text-left"
                 >
                   Log Out
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" className="hover:text-yellow-400">
+                <Link to="/login" className=" hover:text-yellow-400">
                   Sign in
                 </Link>
                 <Link to="/register" className="hover:text-yellow-400">
