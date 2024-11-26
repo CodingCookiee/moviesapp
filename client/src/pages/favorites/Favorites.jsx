@@ -27,12 +27,14 @@ const Favorites = () => {
     fetchFavorites();
   }, []);
 
+
   const handleFavoriteRemove = async (itemId, type) => {
     try {
       const response = await newRequest.post('/favorites/toggle', {
         itemId,
         type
       });
+      // FIXME : The item is not being removed even after the untoggling
       if (!response.data.isFavorite) {
         // Immediately remove from UI
         setFavorites(prev => prev.filter(fav => 
