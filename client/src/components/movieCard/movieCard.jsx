@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 
 const MovieCard = ({ movie, viewType, isFeatured }) => {
   const [isHovered, setIsHovered] = useState();
@@ -6,7 +7,7 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
     viewType === "grid" ? "w-full sm:w-1/2 lg:w-1/4 p-4" : "w-full mb-4";
 
   return (
-    <div className={cardClassName}>
+    <Link to={`/movie/${movie.imdbID}`} className={cardClassName}>
       <div
         className={`movie-card h-full border border-solid border-[rgb(228, 228, 228)] cursor-pointer
              rounded-lg overflow-hidden shadow-md hover:shadow-2xl hover:shadow-yellow-400 relative `}
@@ -59,7 +60,7 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -4,7 +4,8 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="footer flex flex-col w-full justify-center my-[50px] mx-0">
-      <div className="top-container w-full max-w-[1400px] self-center flex flex-col md:flex-row items-start md:items-center justify-between gap-10 px-4">
+    <hr className="my-[0px] mx-0 shadow-lg h-0 border border-solid border-[#e5e5e5]" />
+      <div className="mt-5 top-container w-full max-w-[1400px] self-center flex flex-col md:flex-row items-start md:items-center justify-between gap-10 px-4">
         <div className="left flex flex-col sm:flex-row w-full md:w-[800px] justify-between gap-8 md:gap-0">
           <div className="item flex flex-col gap-5">
             <h2 className="text-md font-semibold">About</h2>
