@@ -1,111 +1,197 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MovieCard from "../../components/movieCard/movieCard";
-import { movies } from "../../../data.js";
+import { useQuery } from "@tanstack/react-query";
+import { searchMoviesByGenre, getGenres } from "../../utils/movieAPI";
 
 const Genre = () => {
-    const { genreName } = useParams();
-    const [viewType, setViewType] = useState("grid");
-    const [currentPage, setCurrentPage] = useState(1);
-    const navigate = useNavigate();
+  const { genreId } = useParams();
+  const [viewType, setViewType] = useState("grid");
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const MAX_PAGES = 30;
 
+//   FIXME : the data is not showing 
 
-    // Filter movies by genre
-    const genreMovies = movies.filter(movie => 
-        movie.Genre.toLowerCase().includes(genreName.toLowerCase())
-    );
+  // Combined genre and movie fetching
+  const { isLoading, error, data: genreData } = useQuery({
+    queryKey: ["genre", genreId, currentPage],
+    queryFn: async () => {
+      const genres = await getGenres();
+      const numericGenreId = parseInt(genreId, 10);
 
-    if (!genreMovies || genreMovies.length === 0) {
-        return (
-          <div className="min-h-screen flex flex-col items-center justify-center">
-            <img
-              src="/movie-error.png"
-              alt="Not Found"
-              className="w-32 h-32 mb-6"
-            />
-            <h2 className="text-3xl font-bold mb-4 text-gray-800">
-              No Movies Available in this Genre
-            </h2>
-            <button
-              onClick={() => navigate("/movies")}
-              className="bg-yellow-400 hover:bg-[#efc949] text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300"
-            >
-              Browse Movies
-            </button>
-          </div>
-        );
+      if (isNaN(numericGenreId) || genres.length === 0) { //Handle genre fetch failure
+        throw new Error("Failed to fetch genres or invalid genre ID.");
       }
 
-    // Pagination
-    const moviesPerPage = 20;
-    const indexOfLastMovie = currentPage * moviesPerPage;
-    const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-    const currentMovies = genreMovies.slice(indexOfFirstMovie, indexOfLastMovie);
-    const totalPages = Math.ceil(genreMovies.length / moviesPerPage);
+      const currentGenre = genres.find((genre) => genre.id === numericGenreId);
 
+      if (!currentGenre) { //Handle case where genreId is not found.
+        throw new Error("Genre not found.");
+      }
+
+      const movies = await searchMoviesByGenre(numericGenreId, currentPage);
+      return { genres, movies, currentGenre };
+    },
+    enabled: Boolean(genreId),
+    onError: (err) => {
+      console.error("Error fetching genre data:", err);
+    },
+  });
+
+  const { genres: allGenres, movies, currentGenre } = genreData || {
+    genres: [],
+    movies: { results: [], total_pages: 0 },
+    currentGenre: null,
+  };
+
+  console.log("Current Genre:", currentGenre);
+  console.log("Movies:", movies);
+  console.log("All Genres:", allGenres);
+
+
+
+  if (isLoading) {
     return (
-        <div className="min-h-screen">
-            <div className="max-w-7xl mx-auto px-4">
-                {/* Genre Title */}
-                <div className="inline-flex items-center justify-center w-full mt-7">
-                    <hr className="w-full h-1 my-8 bg-gray-200 border-0 rounded" />
-                    <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2">
-                        <h1 className="bg-white font-medium text-5xl text-gray-700 capitalize">
-                            {genreName}
-                        </h1>
-                    </div>
-                </div>
-
-                {/* View Toggle */}
-                <div className="flex justify-end p-4 sticky top-0 bg-white z-10">
-                    <button
-                        onClick={() => setViewType("grid")}
-                        className={`mr-2 px-4 py-2 rounded transition-colors ${
-                            viewType === "grid" ? "bg-yellow-400 text-white" : "bg-gray-200"
-                        }`}
-                    >
-                        Grid
-                    </button>
-                    <button
-                        onClick={() => setViewType("list")}
-                        className={`px-4 py-2 rounded transition-colors ${
-                            viewType === "list" ? "bg-yellow-400 text-white" : "bg-gray-200"
-                        }`}
-                    >
-                        List
-                    </button>
-                </div>
-
-                {/* Movies Grid */}
-                <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
-                    {currentMovies.map((movie, index) => (
-                        <MovieCard
-                            key={movie.imdbID || index}
-                            movie={movie}
-                            viewType={viewType}
-                        />
-                    ))}
-                </div>
-
-                {/* Pagination */}
-                <div className="flex justify-center items-center gap-2 my-8">
-                    {Array.from({ length: totalPages }).map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setCurrentPage(index + 1)}
-                            className={`px-4 py-2 rounded transition-colors ${
-                                currentPage === index + 1
-                                    ? "bg-yellow-400 text-white"
-                                    : "bg-gray-200"
-                            }`}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-400"></div>
+      </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
+        <h2 className="text-3xl font-bold mb-4 text-gray-800">
+          Something went wrong
+        </h2>
+        <button
+          onClick={() => navigate("/movies")}
+          className="bg-yellow-400 hover:bg-[#efc949] text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300"
+        >
+          Browse Movies
+        </button>
+      </div>
+    );
+  }
+
+  if (!movies?.results?.length) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <img
+          src="/movie-error.png"
+          alt="Not Found"
+          className="w-32 h-32 mb-6"
+        />
+        <h2 className="text-3xl font-bold mb-4 text-gray-800">
+          No Movies Available in {currentGenre?.name || "this genre"}
+        </h2>
+        <button
+          onClick={() => navigate("/movies")}
+          className="bg-yellow-400 hover:bg-[#efc949] text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300"
+        >
+          Browse Movies
+        </button>
+      </div>
+    );
+  }
+
+  const totalPages = movies.total_pages;
+
+  return (
+    <div className="min-h-screen">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="inline-flex items-center justify-center w-full mt-7">
+          <hr className="w-full h-1 my-8 bg-gray-200 border-0 rounded" />
+          <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2">
+            <h1 className="bg-white font-medium text-5xl text-gray-700 capitalize">
+              {currentGenre?.name || "Genre"}
+            </h1>
+          </div>
+        </div>
+
+        <div className="flex justify-end p-4 sticky top-0 bg-white z-10">
+          <button
+            onClick={() => setViewType("grid")}
+            className={`mr-2 px-4 py-2 rounded transition-colors ${
+              viewType === "grid" ? "bg-yellow-400 text-white" : "bg-gray-200"
+            }`}
+          >
+            Grid
+          </button>
+          <button
+            onClick={() => setViewType("list")}
+            className={`px-4 py-2 rounded transition-colors ${
+              viewType === "list" ? "bg-yellow-400 text-white" : "bg-gray-200"
+            }`}
+          >
+            List
+          </button>
+        </div>
+
+        <div
+          className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+        >
+          {movies.results.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              movie={{
+                id: movie.id,
+                title: movie.title,
+                poster_path: movie.poster_path,
+                vote_average: movie.vote_average,
+                overview: movie.overview,
+                release_date: movie.release_date,
+                genre_ids: movie.genre_ids,
+              }}
+              viewType={viewType}
+              isFeatured={false}
+            />
+          ))}
+        </div>
+
+        <div className="flex justify-center items-center gap-2 my-8">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+          >
+            <img src="/previous.png" alt="" className="w-6 h-6" />
+          </button>
+
+          {/* Pagination Logic - Improved */}
+          {Array.from({ length: totalPages }).map(
+            (_, index) =>
+              index >= currentPage - 2 &&
+              index <= currentPage + 2 && (
+                <button
+                  key={index + 1}
+                  onClick={() => setCurrentPage(index + 1)}
+                  className={`px-4 py-2 rounded transition-colors ${
+                    currentPage === index + 1
+                      ? "bg-[#dc6352] text-white"
+                      : "bg-gray-200"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              )
+          )}
+
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+          >
+            <img src="/next.png" alt="" className="w-6 h-6" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Genre;

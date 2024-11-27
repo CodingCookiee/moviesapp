@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import "./Navbar.css";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getGenres } from "../../utils/movieAPI";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
@@ -11,18 +13,19 @@ const Navbar = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const genres = [
-    "action",
-    "comedy",
-    "drama",
-    "horror",
-    "romance",
-    "thriller",
-    "sci-fi",
-    "adventure",
-    "animation",
-    "documentary",
-  ];
+
+// Update the genres query
+const { data: genres = [] } = useQuery({
+  queryKey: ['genres'],
+  queryFn: async () => {
+    const genresData = await getGenres();
+    return genresData || [];
+  },
+  staleTime: 300000, // Cache for 5 minutes
+  cacheTime: 3600000, // Keep in cache for 1 hour
+});
+
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,16 +65,15 @@ const Navbar = () => {
                 alt=""
                 className="w-10 h-10 md:w-14 md:h-14 object-cover"
               />
-              <Link className="tag font-bold text-xl md:text-2xl">
-                <Link className="text-yellow-400 hover:text-yellow-400">
+              <span className="tag font-bold text-xl md:text-2xl">
+                <span className="text-yellow-400 hover:text-yellow-400">
                   Panda
-                </Link>
+                </span>
                 Play
-              </Link>
+              </span>
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden flex flex-col gap-1.5 ml-4"
             onClick={() => setMobileMenu(!mobileMenu)}
@@ -81,15 +83,19 @@ const Navbar = () => {
             <div className="w-6 h-0.5 bg-current"></div>
           </button>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex links gap-6 items-center font-normal">
-            <Link to='/tvshows' className="hover:text-yellow-400 cursor-pointer">
+            <Link
+              to="/tvshows"
+              className="hover:text-yellow-400 cursor-pointer"
+            >
               Tv Shows
             </Link>
             <Link to="/movies" className="hover:text-yellow-400 cursor-pointer">
               Movies
             </Link>
-            <Link  to='/top50' className="hover:text-yellow-400 cursor-pointer">Top 50</Link>
+            <Link to="/top50" className="hover:text-yellow-400 cursor-pointer">
+              Top 50
+            </Link>
             <div className="relative">
               <button
                 className="font-normal hover:text-yellow-400 cursor-pointer"
@@ -101,16 +107,18 @@ const Navbar = () => {
               {openGenres && (
                 <div className="absolute left-0 z-10 mt-2 w-[300px] origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                   <div className="py-1 flex flex-wrap p-2">
-                    {genres.map((genre) => (
-                      <Link
-                        key={genre}
-                        to={`/genre/${genre}`}
-                        className="w-[calc(50%-4px)] px-4 py-2 text-sm text-gray-700 hover:bg-yellow-400 hover:text-white rounded capitalize transition-colors"
-                        onClick={() => setOpenGenres(false)}
-                      >
-                        {genre}
-                      </Link>
-                    ))}
+                    {genres &&
+                      genres.length > 0 &&
+                      genres.map((genre) => (
+                        <Link
+                          key={genre.id}
+                          to={`/genre/${genre.id}`}
+                          className="w-[calc(50%-4px)] px-4 py-2 text-sm text-gray-700 hover:bg-yellow-400 hover:text-white rounded capitalize transition-colors"
+                          onClick={() => setOpenGenres(false)}
+                        >
+                          {genre.name}
+                        </Link>
+                      ))}
                   </div>
                 </div>
               )}
@@ -118,7 +126,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Desktop User Menu */}
         <div className="right hidden md:flex items-center font-normal">
           {currentUser ? (
             <div
@@ -163,45 +170,51 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {mobileMenu && (
         <div className="md:hidden w-full bg-white text-black p-4 shadow-lg">
           <div className="flex flex-col gap-4">
-            <Link to="/movies" className="hover:text-yellow-400 cursor-pointer">
+            <Link
+              to="/tvshows"
+              className="hover:text-yellow-400 cursor-pointer"
+            >
               Tv Shows
             </Link>
-            <Link className="hover:text-yellow-400 cursor-pointer">Movies</Link>
-            <Link className="hover:text-yellow-400 cursor-pointer">Top 50</Link>
-            <button
-              className="font-normal hover:text-yellow-400 cursor-pointer text-left"
-              onClick={() => setOpenGenres(!openGenres)}
-            >
-              Genres
-            </button>
-            {openGenres && (
-              <div className="flex flex-wrap gap-2 pl-4 ">
-                {[
-                  "action",
-                  "comedy",
-                  "drama",
-                  "horror",
-                  "romance",
-                  "history",
-                  "mystery",
-                ].map((genre) => (
-                  <Link
-                    key={genre}
-                    to={`/genre/${genre}`}
-                    className="w-[calc(50%-10px)] px-3 py-2 text-sm text-gray-700 hover:bg-yellow-400 rounded capitalize"
-                  >
-                    {genre}
-                  </Link>
-                ))}
-              </div>
-            )}
+            <Link to="/movies" className="hover:text-yellow-400 cursor-pointer">
+              Movies
+            </Link>
+            <Link to="/top50" className="hover:text-yellow-400 cursor-pointer">
+              Top 50
+            </Link>
+            <div className="relative cursor-pointer">
+              <button
+                className="font-normal hover:text-yellow-400 cursor-pointer text-left"
+                onClick={() => setOpenGenres(!openGenres)}
+              >
+                Genres
+              </button>
+              {openGenres && (
+                <div className="flex flex-wrap gap-2 pl-4">
+                  {genres &&
+                    genres.length > 0 &&
+                    genres.map((genre) => (
+                      <Link
+                        key={genre.id}
+                        to={`/genre/${genre.id}`}
+                        className="w-[calc(50%-4px)] px-4 py-2 text-sm text-gray-700 hover:bg-yellow-400 hover:text-white rounded capitalize transition-colors"
+                        onClick={() => {
+                          setOpenGenres(false);
+                          setMobileMenu(false);
+                        }}
+                      >
+                        {genre.name}
+                      </Link>
+                    ))}
+                </div>
+              )}
+            </div>
             {currentUser ? (
               <>
-                <Link to="/favorite" className=" hover:bg-yellow-400 text-left">
+                <Link to="/favorites" className="hover:bg-yellow-400 text-left">
                   Favorites
                 </Link>
                 <button
@@ -213,7 +226,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/login" className=" hover:text-yellow-400">
+                <Link to="/login" className="hover:text-yellow-400">
                   Sign in
                 </Link>
                 <Link to="/register" className="hover:text-yellow-400">
@@ -227,5 +240,4 @@ const Navbar = () => {
     </div>
   );
 };
-
 export default Navbar;
