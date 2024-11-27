@@ -11,9 +11,11 @@
 
 ## Powered By
  - MERN Stack
- - Tailwind
- - Jwt
+ - Tailwind CSS
+ - Jwt & Bcrypt
+ - Pagination
  - RESTful Api
+ - Itunes Search Api
 
    
    
