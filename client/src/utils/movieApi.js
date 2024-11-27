@@ -2,8 +2,8 @@ import axios from "axios";
 
 const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
-export const searchMovies = async (pages) => {
-  const url = `https://api.themoviedb.org/3/movie/changes?page=${pages}`;
+export const searchMovies = async (page = 1) => {
+  const url = `https://api.themoviedb.org/3/discover/movie?language=en-US&sort_by=popularity.desc&page=${page}`;
   const options = {
     method: "GET",
     headers: {
@@ -11,15 +11,9 @@ export const searchMovies = async (pages) => {
       Authorization: `Bearer ${accessToken}`,
     },
   };
-  try {
-    const response = await fetch(url, options);
-    const json = await response.json();
-    return json;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
+  return await fetch(url, options);
 };
+
 
 export const searchFeaturedMovies = async () => {
   const url =

@@ -1,24 +1,18 @@
 const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
-export const searchShows = async (pages) => {
-  
-  const url = `https://api.themoviedb.org/3/tv/changes?page=${pages}`;
+
+export const searchShows = async (page = 1) => {
+  const url = `https://api.themoviedb.org/3/discover/tv?language=en-US&sort_by=popularity.desc&page=${page}`;
   const options = {
-    method: "GET",
+    method: 'GET',
     headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
+      accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
   };
-  try {
-    const response = await fetch(url, options);
-    const json = await response.json();
-    return json;
-  } catch (err) {
-    console.error(err);
-    throw err;
-  }
-}
+  return await fetch(url, options);
+};
+
 
 
 

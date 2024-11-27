@@ -50,7 +50,7 @@ const TvShowCard = ({ show, viewType, isFeatured }) => {
 
   return (
     <Link to={`/tvshow/${show.id}`} className={cardClassName}>
-      <div className="tv-card border border-solid border-[rgb(228, 228, 228)] cursor-pointer rounded-lg 
+      <div className="tv-card h-full border border-solid border-[rgb(228, 228, 228)] cursor-pointer rounded-lg 
         overflow-hidden shadow-md relative hover:shadow-[0_0_20px_10px_#efc949] transition-shadow duration-300"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
