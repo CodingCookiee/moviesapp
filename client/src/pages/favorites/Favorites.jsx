@@ -14,7 +14,7 @@ const Favorites = () => {
     try {
       const response = await newRequest.get("/favorites");
       // Filter only favorites with favoriteState true
-      const activeFavorites = response.data.filter(fav => fav.favoriteState);
+      const activeFavorites = response.data.filter((fav) => fav.favoriteState);
       setFavorites(activeFavorites);
     } catch (err) {
       console.error(err);
@@ -27,19 +27,19 @@ const Favorites = () => {
     fetchFavorites();
   }, []);
 
-
   const handleFavoriteRemove = async (itemId, type) => {
     try {
-      const response = await newRequest.post('/favorites/toggle', {
+      const response = await newRequest.post("/favorites/toggle", {
         itemId,
-        type
+        type,
       });
-      // FIXME : The item is not being removed even after the untoggling
       if (!response.data.isFavorite) {
         // Immediately remove from UI
-        setFavorites(prev => prev.filter(fav => 
-          type === 'movie' ? fav.movieId !== itemId : fav.showId !== itemId
-        ));
+        setFavorites((prev) =>
+          prev.filter((fav) =>
+            type === "movie" ? fav.movieId !== itemId : fav.showId !== itemId
+          )
+        );
       }
     } catch (err) {
       console.error(err);
@@ -47,10 +47,10 @@ const Favorites = () => {
   };
 
   const getFavoriteContent = (favorite) => {
-    if (favorite.type === 'movie') {
-      return movies.find(movie => movie.imdbID === favorite.movieId);
+    if (favorite.type === "movie") {
+      return movies.find((movie) => movie.imdbID === favorite.movieId);
     } else {
-      return tvShows.find(show => show.id === parseInt(favorite.showId));
+      return tvShows.find((show) => show.id === parseInt(favorite.showId));
     }
   };
 
@@ -95,7 +95,11 @@ const Favorites = () => {
 
         {favorites.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <img src="/folder.png" alt="No favorites" className="w-32 h-32 mb-6" />
+            <img
+              src="/folder.png"
+              alt="No favorites"
+              className="w-32 h-32 mb-6"
+            />
             <h2 className="text-2xl font-semibold text-gray-700 mb-4">
               No favorites yet
             </h2>
@@ -104,18 +108,24 @@ const Favorites = () => {
             </p>
           </div>
         ) : (
-          <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
+          <div
+            className={`flex flex-wrap ${
+              viewType === "list" ? "flex-col" : ""
+            }`}
+          >
             {favorites.map((favorite) => {
               const content = getFavoriteContent(favorite);
               if (!content) return null;
-{/* FIXME : is featured tag is not worling: context switching   */}
-              return favorite.type === 'movie' ? (
+              return favorite.type === "movie" ? (
                 <MovieCard
                   key={favorite.movieId}
                   movie={content}
                   viewType={viewType}
                   isFavorite={true}
-                  onFavoriteToggle={() => handleFavoriteRemove(favorite.movieId, 'movie')}
+                  isFeatured={content.Featured} // Add this line
+                  onFavoriteToggle={() =>
+                    handleFavoriteRemove(favorite.movieId, "movie")
+                  }
                 />
               ) : (
                 <TvShowCard
@@ -123,7 +133,10 @@ const Favorites = () => {
                   show={content}
                   viewType={viewType}
                   isFavorite={true}
-                  onFavoriteToggle={() => handleFavoriteRemove(favorite.showId, 'show')}
+                  isFeatured={content.Featured} // Add this line
+                  onFavoriteToggle={() =>
+                    handleFavoriteRemove(favorite.showId, "show")
+                  }
                 />
               );
             })}

@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-     "dev": "SET NODE_OPTIONS=--max-old-space-size=8192 && vite",
-     "build": "SET NODE_OPTIONS=--max-old-space-size=8192 && vite build",
+    "dev": "SET NODE_OPTIONS=--max-old-space-size=8192 && vite",
+    "build": "SET NODE_OPTIONS=--max-old-space-size=8192 && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -13,7 +13,7 @@
     "@heroicons/react": "^2.1.5",
     "@stripe/react-stripe-js": "^2.9.0",
     "@stripe/stripe-js": "^5.0.0",
-    "@tanstack/react-query": "^5.60.5",
+    "@tanstack/react-query": "^5.61.5",
     "@vercel/speed-insights": "^1.1.0",
     "axios": "^1.7.7",
     "cloudinary": "^2.5.1",
