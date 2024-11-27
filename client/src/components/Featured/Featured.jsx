@@ -89,7 +89,7 @@ const Featured = () => {
   if (featuredMoviesQuery.isLoading || latestMoviesQuery.isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-400"></div>
+        <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-b-2 border-yellow-400"></div>
       </div>
     );
   }
