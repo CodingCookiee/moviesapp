@@ -1,14 +1,113 @@
 import React, { useState } from "react";
 import MovieCard from "../movieCard/movieCard";
-import TvShowCard from "../tvShowCard/tvShowCard";  
-import { movies } from "../../../data.js";
-import { tvShows } from '../../../tvs.js'
+import TvShowCard from "../tvShowCard/tvShowCard";
+import { useQuery } from "@tanstack/react-query";
+import {
+  searchFeaturedMovies,
+  searchLatestMovies,
+  getMovieDetails,
+} from "../../utils/movieApi.js";
+import {
+  searchFeaturedShows,
+  searchTopRatedShows,
+  getShowDetails,
+} from "../../utils/tvApi.js";
 
 const Featured = () => {
   const [viewType, setViewType] = useState("grid");
-  const mostWatched = movies.slice(0, 12);
-  const latestMovies = movies.slice(12, 24);
-  const latestSeasons = tvShows.slice(0, 16);
+
+  const featuredMoviesQuery = useQuery({
+    queryKey: ["featuredMovies"],
+    queryFn: async () => {
+      const response = await searchFeaturedMovies();
+      const data = await response.json();
+
+      // Fetch details for each movie
+      const moviesWithDetails = await Promise.all(
+        data.results.slice(0, 20).map(async (movie) => {
+          const detailsResponse = await getMovieDetails(movie.id);
+          return await detailsResponse.json();
+        })
+      );
+
+      return moviesWithDetails;
+    },
+  });
+
+  const latestMoviesQuery = useQuery({
+    queryKey: ["latestMovies"],
+    queryFn: async () => {
+      const response = await searchLatestMovies();
+      const data = await response.json();
+
+      // Fetch details for each movie
+      const moviesWithDetails = await Promise.all(
+        data.results.slice(0, 20).map(async (movie) => {
+          const detailsResponse = await getMovieDetails(movie.id);
+          return await detailsResponse.json();
+        })
+      );
+
+      return moviesWithDetails;
+    },
+  });
+
+  const featuredTvShowsQuery = useQuery({
+    queryKey: ["featuredTvShows"],
+    queryFn: async () => {
+      const response = await searchFeaturedShows();
+      const data = await response.json();
+
+      const showsWithDetails = await Promise.all(
+        data.results.slice(0, 20).map(async (show) => {
+          const detailsResponse = await getShowDetails(show.id);
+          return await detailsResponse.json();
+        })
+      );
+
+      return showsWithDetails;
+    },
+  });
+
+  const latestTvShowsQuery = useQuery({
+    queryKey: ["latestTvShows"],
+    queryFn: async () => {
+      const response = await searchTopRatedShows();
+      const data = await response.json();
+
+      const showsWithDetails = await Promise.all(
+        data.results.slice(0, 20).map(async (show) => {
+          const detailsResponse = await getShowDetails(show.id);
+          return await detailsResponse.json();
+        })
+      );
+
+      return showsWithDetails;
+    },
+  });
+
+  if (featuredMoviesQuery.isLoading || latestMoviesQuery.isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-400"></div>
+      </div>
+    );
+  }
+
+  if (featuredMoviesQuery.error || latestMoviesQuery.error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Something went wrong
+        </h2>
+        <p className="text-gray-600">
+          {featuredMoviesQuery.error?.message ||
+            latestMoviesQuery.error?.message}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -32,21 +131,39 @@ const Featured = () => {
         </button>
       </div>
 
-      {/* Most Watched Section */}
+      {/* Featured Movies Section */}
       <div className="mb-12">
         <div className="flex items-center gap-2.5 ml-4 mb-6">
-          <div className="">
-            <div className="h-[40px]  bg-yellow-400 w-[10px]"></div>
-          </div>
+          <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
           <h2 className="text-2xl font-bold mb-1">Featured - Most Watched</h2>
         </div>
         <div
           className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
         >
-          {mostWatched.map((movie, index) => (
+          {featuredMoviesQuery.data?.map((movie, index) => (
             <MovieCard
-              key={movie.imdbID || index}
+              key={movie.trackId || index}
               movie={movie}
+              viewType={viewType}
+              isFeatured={true}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Featured Seasons Section */}
+      <div className="mb-12">
+        <div className="flex items-center gap-2.5 ml-4 mb-6">
+          <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
+          <h2 className="text-2xl font-bold mb-1">Featured - TV Shows</h2>
+        </div>
+        <div
+          className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+        >
+          {featuredTvShowsQuery.data?.map((show) => (
+            <TvShowCard
+              key={show.id}
+              show={show}
               viewType={viewType}
               isFeatured={true}
             />
@@ -56,18 +173,16 @@ const Featured = () => {
 
       {/* Latest Movies Section */}
       <div className="mb-12">
-      <div className="flex items-center gap-2.5 ml-4 mb-6">
-          <div className="">
-            <div className="h-[40px]  bg-yellow-400 w-[10px]"></div>
-          </div>
-          <h2 className="text-2xl font-bold mb-1">Latest Movies</h2>
+        <div className="flex items-center gap-2.5 ml-4 mb-6">
+          <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
+          <h2 className="text-2xl font-bold mb-1">Movies</h2>
         </div>
         <div
           className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
         >
-          {latestMovies.map((movie, index) => (
+          {latestMoviesQuery.data?.map((movie, index) => (
             <MovieCard
-              key={movie.imdbID || index}
+              key={movie.trackId || index}
               movie={movie}
               viewType={viewType}
               isFeatured={false}
@@ -75,10 +190,9 @@ const Featured = () => {
           ))}
         </div>
       </div>
-
       {/* Latest Seasons Section */}
       <div className="mb-12">
-      <div className="flex items-center gap-2.5 ml-4 mb-6">
+        <div className="flex items-center gap-2.5 ml-4 mb-6">
           <div className="">
             <div className="h-[40px]  bg-yellow-400 w-[10px]"></div>
           </div>
@@ -87,7 +201,7 @@ const Featured = () => {
         <div
           className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
         >
-          {latestSeasons.map((show, index) => (
+          {latestTvShowsQuery.data?.map((show, index) => (
             <TvShowCard
               key={show.id || index}
               show={show}
@@ -100,5 +214,4 @@ const Featured = () => {
     </div>
   );
 };
-
 export default Featured;

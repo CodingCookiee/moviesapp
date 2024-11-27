@@ -8,14 +8,13 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
+  const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
 
   useEffect(() => {
     const checkFavoriteStatus = async () => {
       if (currentUser) {
         try {
-          const response = await newRequest.get(
-            `/favorites/check/${movie.imdbID}`
-          );
+          const response = await newRequest.get(`/favorites/check/${movie.id}`);
           setIsFavorite(response.data.isFavorite);
         } catch (err) {
           console.error(err);
@@ -23,12 +22,11 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
       }
     };
     checkFavoriteStatus();
-  }, [movie.imdbID, currentUser]);
+  }, [movie.id, currentUser]);
 
-  const cardClassName =
-    viewType === "grid"
-      ? "w-full sm:w-1/2 lg:w-1/4 p-4"
-      : "w-3/5 h-2/3 self-center mb-4";
+  const cardClassName = viewType === "grid" 
+    ? "w-full sm:w-1/2 lg:w-1/4 p-4" 
+    : "w-3/5 h-2/3 self-center mb-4";
 
   const handleFavorite = async (e) => {
     e.preventDefault();
@@ -41,7 +39,7 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
 
     try {
       const response = await newRequest.post("/favorites/toggle", {
-        itemId: movie.imdbID,
+        itemId: movie.id,
         type: "movie",
       });
       setIsFavorite(response.data.isFavorite);
@@ -51,7 +49,7 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
   };
 
   return (
-    <Link to={`/movie/${movie.imdbID}`} className={cardClassName}>
+    <Link to={`/movie/${movie.id}`} className={cardClassName}>
       <div
         className="movie-card h-full border border-solid border-[rgb(228, 228, 228)] rounded-lg overflow-hidden shadow-md hover:shadow-[0_0_15px_rgba(239,201,73,0.5)] transition-shadow duration-300 relative"
         onMouseEnter={() => setIsHovered(true)}
@@ -59,8 +57,8 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
       >
         <div className="aspect-[2/3] relative">
           <img
-            src={movie.Poster}
-            alt={movie.Title}
+            src={`${imageBaseUrl}${movie.poster_path}`}
+            alt={movie.title}
             className="absolute w-full h-full object-cover"
           />
           {isHovered && (
@@ -68,12 +66,11 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
               <img
                 src="/play-button.png"
                 alt="play"
-                className="w-16 h-16 transform hover:scale-110 transition-transform duration-300"
+                className="w-20 h-20 transform hover:scale-150 transition-transform duration-300"
               />
             </div>
           )}
 
-          {/* Favorite Button */}
           <button
             onClick={handleFavorite}
             className="absolute top-2 right-2 z-10 p-2 rounded-full bg-white transition-colors"
@@ -85,7 +82,6 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
             />
           </button>
 
-          {/* Tags */}
           <div className="absolute top-2 left-2">
             {isFeatured ? (
               <span className="bg-yellow-400 text-white px-2 py-1 rounded text-sm">
@@ -98,27 +94,34 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
             )}
           </div>
 
-          {/* Rating */}
           <div className="absolute bottom-2 right-2">
             <div className="flex items-center bg-black/70 text-[#efc949] px-2 py-1 rounded">
               <img src="/star.png" alt="star" className="w-4 h-4 mr-1" />
-              <span>{movie.imdbRating}</span>
+              <span>{movie.vote_average.toFixed(1)}</span>
             </div>
           </div>
         </div>
 
         <div className="info p-4">
           <h3 className="text-lg font-semibold mb-2 line-clamp-2">
-            {movie.Title}
+            {movie.title}
           </h3>
-          <p className="text-gray-600 mb-2 line-clamp-1">{movie.Genre}</p>
+          <p className="text-gray-600 mb-2 line-clamp-1">
+            {movie.genres?.map(genre => genre.name).join(", ")}
+          </p>
           <div className="flex justify-between items-center">
-            <span className="text-lg font-bold">$9.99</span>
+            <span className="text-lg font-bold">
+              {new Date(movie.release_date).getFullYear()}
+            </span>
+            <span className="text-gray-600">
+              {movie.runtime} min
+            </span>
           </div>
         </div>
       </div>
     </Link>
   );
 };
+
 
 export default MovieCard;

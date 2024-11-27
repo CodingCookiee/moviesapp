@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import MovieCard from "../../components/movieCard/movieCard";
 import { movies } from "../../../data.js";
+import {  } from "../../utils/movieApi.js";
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
   const [viewType, setViewType] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const featuredMovies = movies.slice(0, 12);
+ 
   const remainingMovies = movies.slice(12);
+  
+  const { data: featuredMovies } = useQuery(['featuredMovies'], 
+    () => fetchMovies({ limit: 16 }))
+
+  const { data } = useQuery(['search', searchTerm], 
+    () => fetchMovies({ term: searchTerm }))
+
 
   // Calculate pagination for Movie Night section
   const indexOfLastMovie = currentPage * 16;
@@ -62,7 +72,7 @@ const Home = () => {
           <h2 className="text-2xl font-bold mb-1">Featured Movies</h2>
         </div>
           <div className="flex flex-wrap">
-            {featuredMovies.map((movie, index) => (
+            {data.map((movie, index) => (
               <MovieCard
                 key={movie.imdbID || index}
                 movie={movie}

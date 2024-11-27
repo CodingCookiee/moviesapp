@@ -17,6 +17,7 @@
     "@vercel/speed-insights": "^1.1.0",
     "axios": "^1.7.7",
     "cloudinary": "^2.5.1",
+    "dotenv": "^16.4.5",
     "fiverrclone": "file:",
     "infinite-react-carousel": "^1.2.11",
     "moment": "^2.30.1",
