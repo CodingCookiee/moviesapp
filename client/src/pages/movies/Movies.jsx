@@ -23,8 +23,7 @@ const Movies = () => {
       return response.data.results || [];
     },
   });
-
-  console.log("featuredMovies:", featuredMovies);
+  
 
   const {
     isLoading: allMoviesLoading,
