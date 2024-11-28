@@ -11,7 +11,6 @@ const Genre = () => {
   const navigate = useNavigate();
   const MAX_PAGES = 30;
 
-//   FIXME : the data is not showing 
 
   // Combined genre and movie fetching
   const { isLoading, error, data: genreData } = useQuery({
@@ -41,7 +40,7 @@ const Genre = () => {
 
   const { genres: allGenres, movies, currentGenre } = genreData || {
     genres: [],
-    movies: { results: [], total_pages: 0 },
+    movies: { results: [], total_pages: 0, MAX_PAGES },
     currentGenre: null,
   };
 

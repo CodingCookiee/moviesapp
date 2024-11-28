@@ -63,8 +63,8 @@ const App = () => {
           element: <Favorites />,
         },
         {
-          path: "/genre/:genreName",
-          element: <Genre />,
+          path: "/genre/:genreId",
+          element: <Genre />
         },
         {
           path: "/top50",
