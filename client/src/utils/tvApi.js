@@ -63,7 +63,7 @@ export const getShowDetails = async (showId) => {
 };
 
 export const getSeasonDetails = async (showId, seasonNumber) => {
-  const url = `https://api.themoviedb.org/3/tv/${showId}/season/${seasonNumber}?language=en-US`;
+  const url = `https://api.themoviedb.org/3/tv/${showId}/season/${seasonNumber}?language=en-US&append_to_response=videos`;
   const options = {
     method: 'GET',
     headers: {

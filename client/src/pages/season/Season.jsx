@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import ReactPlayer from "react-player";
 import { useQuery } from "@tanstack/react-query";
 import { getShowDetails, getSeasonDetails } from "../../utils/tvApi";
 
 const Season = () => {
   const { id, seasonNumber } = useParams();
   const navigate = useNavigate();
-  const [activeEpisodes, setActiveEpisodes] = useState({});
+  const [showEpisodes, setShowEpisodes] = useState(false);
 
   const { data: show } = useQuery({
     queryKey: ['tvshow', id],
@@ -42,8 +43,24 @@ const Season = () => {
     );
   }
 
+  const trailerVideo = show.videos?.results?.find(
+    video => video.type === "Recap"  || video.type === "Teaser" && video.site === "YouTube"
+  );
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      {/* Video Player Section */}
+      {trailerVideo && (
+        <div className="w-full aspect-video mb-8 bg-gray-900 rounded-lg overflow-hidden">
+          <ReactPlayer
+            url={`https://www.youtube.com/watch?v=${trailerVideo.key}`}
+            width="100%"
+            height="100%"
+            controls
+          />
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Season Info Section */}
         <div className="md:col-span-1">
@@ -65,49 +82,46 @@ const Season = () => {
 
         {/* Episodes Section */}
         <div className="md:col-span-2">
-          <h2 className="text-2xl font-bold mb-6">Episodes</h2>
-          <div className="space-y-4">
-            {seasonDetails.episodes?.map((episode) => (
-              <div key={episode.id} className="bg-white rounded-lg shadow-md">
-                <button
-                  onClick={() => setActiveEpisodes(prev => ({
-                    ...prev,
-                    [episode.episode_number]: !prev[episode.episode_number]
-                  }))}
-                  className="w-full p-4 flex justify-between items-center hover:bg-gray-50"
-                >
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={`https://image.tmdb.org/t/p/w300${episode.still_path}`}
-                      alt={episode.name}
-                      className="w-32 h-20 object-cover rounded"
-                    />
-                    <div>
-                      <h3 className="font-semibold">
-                        {episode.episode_number}. {episode.name}
-                      </h3>
-                      <p className="text-sm text-gray-600">{episode.air_date}</p>
-                    </div>
-                  </div>
-                  <span>{activeEpisodes[episode.episode_number] ? "▼" : "▶"}</span>
-                </button>
-                
-                {activeEpisodes[episode.episode_number] && (
-                  <div className="p-4 border-t">
-                    <p className="text-gray-700">{episode.overview}</p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <div className="flex items-center bg-black/10 px-3 py-1 rounded">
-                        <img src="/star.png" alt="rating" className="w-4 h-4 mr-1" />
-                        <span className="text-yellow-400 font-bold">
-                          {episode.vote_average?.toFixed(1)}
-                        </span>
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div
+              onClick={() => setShowEpisodes(!showEpisodes)}
+              className="cursor-pointer bg-gray-100 hover:bg-yellow-400 transition-colors p-4 flex justify-between items-center"
+            >
+              <h2 className="text-2xl font-bold">Episodes</h2>
+              <span className="transform transition-transform duration-200">
+                {showEpisodes ? <img src="/down-arrow.png" alt="" className="w-10 h-10" /> : <img src="/right-arrow.png" alt="" className="w-10 h-10" />}
+              </span>
+            </div>
+
+            {showEpisodes && (
+              <div className="p-4 space-y-6">
+                {seasonDetails.episodes?.map((episode) => (
+                  <div key={episode.id} className="border-b last:border-b-0 pb-6 last:pb-0">
+                    <div className="flex gap-4">
+                      {episode.still_path && (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w300${episode.still_path}`}
+                          alt={episode.name}
+                          className="w-48 h-27 object-cover rounded"
+                        />
+                      )}
+                      <div>
+                        <h3 className="font-bold text-lg mb-2">
+                          {episode.episode_number}. {episode.name}
+                        </h3>
+                        <div className="flex items-center gap-4 mb-2">
+                          <span className="text-gray-600">{episode.air_date}</span>
+                          {episode.runtime && (
+                            <span className="text-gray-600">{episode.runtime} min</span>
+                          )}
+                        </div>
+                        <p className="text-gray-700">{episode.overview}</p>
                       </div>
-                      <span className="text-gray-600">{episode.runtime} min</span>
                     </div>
                   </div>
-                )}
+                ))}
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

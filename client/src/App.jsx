@@ -84,8 +84,8 @@ const App = () => {
           element: <TvShow />,
         },
         {
-          path: "/tvshow/:id/season/:seasonNumber",
-          element: <Season />,
+          path: "/season/:id/:seasonNumber", 
+          element: <Season />
         },
         {
           path: "/login",
