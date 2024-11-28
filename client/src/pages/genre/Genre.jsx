@@ -19,10 +19,9 @@ const Genre = () => {
       return data;
     },
   });
-  console.log("Genres", genres);
 
   const currentGenre = genres?.find((genre) => genre.id === parseInt(genreId));
-  console.log("Current Genre:",  currentGenre);
+  console.log("Current Genre:", currentGenre);
   const {
     isLoading,
     error,
@@ -33,12 +32,11 @@ const Genre = () => {
       const response = await searchMoviesByGenre(genreId, currentPage);
       return {
         movies: response?.data?.results,
-        totalPages: Math.min(response.total_pages, MAX_PAGES),
+        totalPages: Math.min(response?.data?.total_pages, MAX_PAGES),
       };
     },
     enabled: Boolean(genreId),
   });
-  console.log("movies data",  moviesData?.data);
 
   if (isLoading) {
     return (
@@ -117,79 +115,99 @@ const Genre = () => {
           </button>
         </div>
 
-        <div
-          className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
-        >
-          {moviesData?.movies?.map((movie) => (
-            <MovieCard
-              key={movie.id}
-              movie={{
-                id: movie.id,
-                title: movie.title,
-                poster_path: movie.poster_path,
-                vote_average: movie.vote_average,
-                overview: movie.overview,
-                release_date: movie.release_date,
-                genre_ids: movie.genre_ids,
-              }}
-              viewType={viewType}
-              isFeatured={false}
-            />
-          ))}
-        </div>
-
-        <div className="flex justify-center items-center gap-2 my-8">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-          >
-            <img src="/previous.png" alt="" className="w-6 h-6" />
-          </button>
-
-          {Array.from({
-            length: Math.min(moviesData.totalPages, MAX_PAGES),
-          }).map((_, index) => {
-            let start = Math.max(currentPage - 2, 1);
-            let end = Math.min(start + 4, moviesData.totalPages, MAX_PAGES);
-
-            if (end === moviesData.totalPages || end === MAX_PAGES) {
-              start = Math.max(end - 4, 1);
-            }
-
-            if (index + 1 >= start && index + 1 <= end) {
-              return (
+        {/* All Movies */}
+        <div>
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-400"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 text-red-500">
+              Error loading movies: {error.message}
+            </div>
+          ) : (
+            <>
+              <div
+                className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+              >
+                {moviesData?.movies?.map((movie) => (
+                  <MovieCard
+                    key={movie.id}
+                    movie={{
+                      id: movie.id,
+                      title: movie.title,
+                      poster_path: movie.poster_path,
+                      vote_average: movie.vote_average,
+                      overview: movie.overview,
+                      release_date: movie.release_date,
+                      genre_ids: movie.genre_ids,
+                    }}
+                    viewType={viewType}
+                    isFeatured={false}
+                  />
+                ))}
+              </div>
+              {/* Pagination */}
+              <div className="flex justify-center items-center gap-2 my-8">
                 <button
-                  key={index}
-                  onClick={() => setCurrentPage(index + 1)}
-                  className={`px-4 py-2 rounded transition-colors ${
-                    currentPage === index + 1
-                      ? "bg-[#dc6352] text-white"
-                      : "bg-gray-200"
-                  }`}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
                 >
-                  {index + 1}
+                  <img src="/previous.png" alt="" className="w-6 h-6" />
                 </button>
-              );
-            }
-            return null;
-          })}
 
-          <button
-            onClick={() =>
-              setCurrentPage((prev) =>
-                Math.min(prev + 1, moviesData.totalPages, MAX_PAGES)
-              )
-            }
-            disabled={currentPage >= Math.min(moviesData.totalPages, MAX_PAGES)}
-            className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
-          >
-            <img src="/next.png" alt="" className="w-6 h-6" />
-          </button>
+                {Array.from({
+                  length: Math.min(moviesData?.totalPages || 0, MAX_PAGES),
+                }).map((_, index) => {
+                  let start = Math.max(currentPage - 2, 1);
+                  let end = Math.min(start + 4, moviesData?.totalPages || 0);
+                  if (end === moviesData?.totalPages) {
+                    start = Math.max(end - 4, 1);
+                  }
+                  if (index + 1 >= start && index + 1 <= end) {
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentPage(index + 1)}
+                        className={`px-4 py-2 rounded transition-colors ${
+                          currentPage === index + 1
+                            ? "bg-[#dc6352] text-white"
+                            : "bg-gray-200"
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    );
+                  }
+                  return null;
+                })}
+
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(
+                        prev + 1,
+                        Math.min(moviesData?.totalPages || 1, MAX_PAGES)
+                      )
+                    )
+                  }
+                  disabled={
+                    currentPage ===
+                    Math.min(moviesData?.totalPages || 1, MAX_PAGES)
+                  }
+                  className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
+                >
+                  <img src="/next.png" alt="" className="w-6 h-6" />
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 };
-
 export default Genre;

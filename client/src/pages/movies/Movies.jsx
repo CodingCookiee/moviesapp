@@ -23,7 +23,6 @@ const Movies = () => {
       return response.data.results || [];
     },
   });
-  
 
   const {
     isLoading: allMoviesLoading,
@@ -141,7 +140,7 @@ const Movies = () => {
                   />
                 ))}
               </div>
-
+              {/* Pagination */}
               <div className="flex justify-center items-center gap-2 my-8">
                 <button
                   onClick={() =>
