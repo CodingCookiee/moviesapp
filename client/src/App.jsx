@@ -14,8 +14,8 @@ import Genre from "./pages/genre/Genre";
 import Top50 from "./pages/Top50/Top50";
 import TvShows from "./pages/TvShows/tvShows";
 import TvShow from "./pages/TVShow/tvShow";
-import Episode from "./pages/Episode/Episode";
 import WatchProviders from "./pages/watchProviders/watchProviders";
+import Season from "./pages/season/Season";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -84,8 +84,8 @@ const App = () => {
           element: <TvShow />,
         },
         {
-          path: "/episode/:showId/:seasonNum/:episodeNum",
-          element: <Episode />,
+          path: "/tvshow/:id/season/:seasonNumber",
+          element: <Season />,
         },
         {
           path: "/login",

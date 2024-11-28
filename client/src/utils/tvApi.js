@@ -41,7 +41,7 @@ export const searchTopRatedShows = async () => {
 };
 
 export const getShowDetails = async (showId) => {
-  const url = `https://api.themoviedb.org/3/tv/${showId}?language=en-US`;
+  const url = `https://api.themoviedb.org/3/tv/${showId}?language=en-US&append_to_response=videos,watch/providers`;
   const options = {
     method: 'GET',
     headers: {
@@ -49,8 +49,33 @@ export const getShowDetails = async (showId) => {
       Authorization: `Bearer ${accessToken}`
     }
   };
-  return await fetch(url, options);
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching show details:', error);
+    throw error;
+  }
 };
+
+export const getSeasonDetails = async (showId, seasonNumber) => {
+  const url = `https://api.themoviedb.org/3/tv/${showId}/season/${seasonNumber}?language=en-US`;
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`
+    }
+  };
+  const response = await fetch(url, options);
+  return response.json();
+};
+
+
 
 
 

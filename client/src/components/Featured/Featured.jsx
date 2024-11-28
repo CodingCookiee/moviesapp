@@ -61,7 +61,7 @@ const Featured = () => {
       const showsWithDetails = await Promise.all(
         data.results.slice(0, 20).map(async (show) => {
           const detailsResponse = await getShowDetails(show.id);
-          return await detailsResponse.json();
+          return await detailsResponse
         })
       );
 
@@ -78,7 +78,7 @@ const Featured = () => {
       const showsWithDetails = await Promise.all(
         data.results.slice(0, 20).map(async (show) => {
           const detailsResponse = await getShowDetails(show.id);
-          return await detailsResponse.json();
+          return await detailsResponse
         })
       );
 
