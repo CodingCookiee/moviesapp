@@ -98,7 +98,7 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
           <div className="absolute bottom-2 right-2">
             <div className="flex items-center bg-black/70 text-[#efc949] px-2 py-1 rounded">
               <img src="/star.png" alt="star" className="w-4 h-4 mr-1" />
-              <span>{movie.vote_average.toFixed(1)}</span>
+              <span>{Math.round(movie.vote_average)}</span>
             </div>
           </div>
         </div>

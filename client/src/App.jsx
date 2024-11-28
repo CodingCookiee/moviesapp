@@ -15,6 +15,7 @@ import Top50 from "./pages/Top50/Top50";
 import TvShows from "./pages/TvShows/tvShows";
 import TvShow from "./pages/TVShow/tvShow";
 import Episode from "./pages/Episode/Episode";
+import WatchProviders from "./pages/watchProviders/watchProviders";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -69,6 +70,10 @@ const App = () => {
         {
           path: "/top50",
           element: <Top50 />,
+        },
+        {
+          path: "/watch-providers",
+          element: <WatchProviders />,
         },
         {
           path: "/tvshows",

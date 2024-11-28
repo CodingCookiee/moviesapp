@@ -98,7 +98,7 @@ export const searchMoviesByGenre = async (genreId, page = 1) => {
 
 
 export const getMovieDetails = async (movieId) => {
-  const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US&append_to_response=videos,credits`;
+  const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US&append_to_response=videos,credits,watch/providers`;
   const options = {
     method: "GET",
     headers: {
@@ -116,9 +116,7 @@ export const getMovieDetails = async (movieId) => {
     return data;
   } catch (error) {
     console.error('Error fetching movie details:', error);
-    console.log('Response status:', error.status);
-    console.log('Response data:', error.data);
-    throw error; // Re-throw to be handled by React Query
+    throw error;
   }
 };
 
