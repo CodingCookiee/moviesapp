@@ -5,16 +5,15 @@ import { useQuery } from "@tanstack/react-query";
 import {
   searchFeaturedMovies,
   searchLatestMovies,
-  getMovieDetails,
 } from "../../utils/movieHelper.js";
 import {
   searchFeaturedShows,
   searchTopRatedShows,
-  getShowDetails,
 } from "../../utils/tvHelper.js";
 
 const Featured = () => {
   const [viewType, setViewType] = useState("grid");
+
 
   const featuredMoviesQuery = useQuery({
     queryKey: ["featuredMovies"],

@@ -1,5 +1,10 @@
 import newRequest from './newRequest';
 
+export const searchTvByQuery = async (query, page = 1) => {
+  const encodedQuery = encodeURIComponent(query);
+  return await newRequest.get(`/tv/search?query=${encodedQuery}&page=${page}`);
+};
+
 export const searchShows = async (page = 1) => {
   return await newRequest.get(`/tv?page=${page}`);
 };
@@ -19,3 +24,6 @@ export const getShowDetails = async (showId) => {
 export const getSeasonDetails = async (showId, seasonNumber) => {
   return await newRequest.get(`/tv/${showId}/season/${seasonNumber}`);
 };
+
+
+

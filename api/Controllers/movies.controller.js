@@ -4,8 +4,24 @@ import {
   getMovieDetails,
   getGenres,
   searchMoviesByGenre,
-  searchLatestMovies 
+  searchLatestMovies ,
+  searchMoviesByQuery
 } from '../utils/movieApi.js';
+
+
+export const getMoviesByQuery = async (req, res, next) => {
+  try {
+    const { query } = req.query;
+    const page = req.query.page || 1;
+    const response = await searchMoviesByQuery(query, page);
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
+};
+
+
   
   export const getMovies = async (req, res, next) => {
     try {
@@ -69,4 +85,4 @@ import {
       next(err);
     }
   };
-  
+

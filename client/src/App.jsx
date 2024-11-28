@@ -16,6 +16,7 @@ import TvShows from "./pages/TvShows/tvShows";
 import TvShow from "./pages/TVShow/tvShow";
 import WatchProviders from "./pages/watchProviders/watchProviders";
 import Season from "./pages/season/Season";
+import SearchResult from "./pages/searchResult/searchResult";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -25,6 +26,7 @@ import {
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -86,6 +88,10 @@ const App = () => {
         {
           path: "/season/:id/:seasonNumber", 
           element: <Season />
+        },
+        {
+          path: "/search",
+          element: <SearchResult />,
         },
         {
           path: "/login",

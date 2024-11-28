@@ -1,5 +1,13 @@
 import newRequest from './newRequest';
 
+
+export const searchMoviesByQuery = async (query, page = 1) => {
+  const encodedQuery = encodeURIComponent(query);
+  return await newRequest.get(`/movies/search?query=${encodedQuery}&page=${page}`);
+};
+
+
+
 export const searchMovies = async (page = 1) => {
   return await newRequest.get(`/movies?page=${page}`);
 };
@@ -23,3 +31,6 @@ export const getGenres = async () => {
 export const searchMoviesByGenre = async (genreId, page = 1) => {
   return await newRequest.get(`/movies/genre/${genreId}?page=${page}`);
 };
+
+
+

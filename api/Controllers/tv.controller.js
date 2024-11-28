@@ -3,8 +3,23 @@ import {
   searchFeaturedShows, 
   getShowDetails,
   getSeasonDetails,
-  searchTopRatedShows 
+  searchTopRatedShows,
+  searchTvByQuery
 } from '../utils/tvApi.js';
+
+
+
+export const getTvByQuery = async (req, res, next) => {
+  try {
+    const query = req.query.query;
+    const page = req.query.page || 1;
+    const response = await searchTvByQuery(query, page);
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const getTvShows = async (req, res, next) => {
   try {
@@ -57,3 +72,5 @@ export const getShowSeasonDetails = async (req, res, next) => {
     next(err);
   }
 };
+
+
