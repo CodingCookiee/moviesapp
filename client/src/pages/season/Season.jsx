@@ -23,6 +23,8 @@ const { isLoading, error, data: seasonDetails } = useQuery({
   }
 });
 
+console.log(seasonDetails);
+
 
   if (isLoading) {
     return (
@@ -49,10 +51,10 @@ const { isLoading, error, data: seasonDetails } = useQuery({
     );
   }
 
-  const trailerVideo = show.videos?.results?.find(
+  const trailerVideo = seasonDetails.videos?.results?.find(
     (video) =>
       video.type === "Recap" ||
-      (video.type === "Teaser" && video.site === "YouTube")
+      (video.type === "Teaser"  && video.site === "YouTube")
   );
 
   return (

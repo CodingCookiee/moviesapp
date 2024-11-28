@@ -198,7 +198,7 @@ const TvShow = () => {
                     />
                   </div>
                 )}
-                <div className="mt-2 text-center self-center">
+                <div className="mt-2 text-center self-center overflow-hidden max-w-[200px]">
                   <h3 className="font-semibold">{season.name}</h3>
                   <p className="text-sm text-gray-600">
                     {season.episode_count} Episodes

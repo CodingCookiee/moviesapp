@@ -12,22 +12,35 @@ const TvShows = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const MAX_PAGES = 30;
 
-  const { isLoading  : featuredLoading, error: featuredError,data: featuredShows } = useQuery({
-    queryKey: ['featuredShows'],
+  const {
+    isLoading: featuredLoading,
+    error: featuredError,
+    data: featuredShows,
+  } = useQuery({
+    queryKey: ["featuredShows"],
     queryFn: async () => {
       const response = await searchFeaturedShows();
       return response.data.results || [];
-    }
+    },
   });
-  
-  const { isLoading : allShowsLoading, error: allShowsError, data: allShowsData } = useQuery({
-    queryKey: ['allShows', currentPage],
+
+  const {
+    isLoading: allShowsLoading,
+    error: allShowsError,
+    data: allShowsData,
+  } = useQuery({
+    queryKey: ["allShows", currentPage],
     queryFn: async () => {
       const response = await searchShows(currentPage);
-      return response.data;
-    }
+      const data = response.data;
+      return {
+        ...data,
+        total_pages: Math.min(data.total_pages, MAX_PAGES),
+      };
+    },
   });
-  
+
+  console.log(allShowsData);
 
   if (featuredLoading) {
     return (
@@ -41,7 +54,9 @@ const TvShows = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Something went wrong</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Something went wrong
+        </h2>
         <p className="text-gray-600">{featuredError.message}</p>
       </div>
     );
@@ -54,7 +69,9 @@ const TvShows = () => {
         <div className="inline-flex items-center justify-center w-full mt-7">
           <hr className="w-full h-1 my-8 bg-gray-200 border-0 rounded" />
           <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2">
-            <h1 className="bg-white font-medium text-5xl text-gray-700">TV Shows</h1>
+            <h1 className="bg-white font-medium text-5xl text-gray-700">
+              TV Shows
+            </h1>
           </div>
         </div>
 
@@ -84,7 +101,9 @@ const TvShows = () => {
             <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
             <h2 className="text-2xl font-bold">Featured TV Shows</h2>
           </div>
-          <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
+          <div
+            className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+          >
             {featuredShows?.map((show) => (
               <TvShowCard
                 key={show.id}
@@ -102,7 +121,7 @@ const TvShows = () => {
             <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
             <h2 className="text-2xl font-bold">All TV Shows</h2>
           </div>
-          
+
           {allShowsLoading ? (
             <div className="flex justify-center py-8">
               <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-400"></div>
@@ -113,8 +132,10 @@ const TvShows = () => {
             </div>
           ) : (
             <>
-              <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
-                {allShowsData?.shows?.map((show) => (
+              <div
+                className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+              >
+                {allShowsData?.results?.map((show) => (
                   <TvShowCard
                     key={show.id}
                     show={show}
@@ -127,17 +148,21 @@ const TvShows = () => {
               {/* Pagination */}
               <div className="flex justify-center items-center gap-2 my-8">
                 <button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
                   disabled={currentPage === 1}
                   className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
                 >
                   <img src="/previous.png" alt="" className="w-6 h-6" />
                 </button>
 
-                {Array.from({ length: Math.min(allShowsData?.totalPages || 0, MAX_PAGES) }).map((_, index) => {
+                {Array.from({
+                  length: Math.min(allShowsData?.total_pages || 0, MAX_PAGES),
+                }).map((_, index) => {
                   let start = Math.max(currentPage - 2, 1);
-                  let end = Math.min(start + 4, allShowsData?.totalPages || 0);
-                  if (end === allShowsData?.totalPages) {
+                  let end = Math.min(start + 4, allShowsData?.total_pages || 0);
+                  if (end === allShowsData?.total_pages) {
                     start = Math.max(end - 4, 1);
                   }
                   if (index + 1 >= start && index + 1 <= end) {
@@ -159,10 +184,18 @@ const TvShows = () => {
                 })}
 
                 <button
-                  onClick={() => setCurrentPage((prev) => 
-                    Math.min(prev + 1, Math.min(allShowsData?.totalPages || 1, MAX_PAGES))
-                  )}
-                  disabled={currentPage === Math.min(allShowsData?.totalPages || 1, MAX_PAGES)}
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(
+                        prev + 1,
+                        Math.min(allShowsData?.totalPages || 1, MAX_PAGES)
+                      )
+                    )
+                  }
+                  disabled={
+                    currentPage ===
+                    Math.min(allShowsData?.totalPages || 1, MAX_PAGES)
+                  }
                   className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
                 >
                   <img src="/next.png" alt="" className="w-6 h-6" />
@@ -175,6 +208,5 @@ const TvShows = () => {
     </div>
   );
 };
-
 
 export default TvShows;
