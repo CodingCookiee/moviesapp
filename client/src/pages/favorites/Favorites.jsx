@@ -1,60 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MovieCard from "../../components/movieCard/movieCard";
 import TvShowCard from "../../components/tvShowCard/tvShowCard";
+import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
-import { movies } from "../../../data.js";
-import { tvShows } from "../../../tvs.js";
 
 const Favorites = () => {
-  const [favorites, setFavorites] = useState([]);
   const [viewType, setViewType] = useState("grid");
-  const [loading, setLoading] = useState(true);
 
-  const fetchFavorites = async () => {
-    try {
-      const response = await newRequest.get("/favorites");
-      // Filter only favorites with favoriteState true
-      const activeFavorites = response.data.filter((fav) => fav.favoriteState);
-      setFavorites(activeFavorites);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  useEffect(() => {
-    fetchFavorites();
-  }, []);
+const { isLoading, error, data: favorites, refetch } = useQuery({
+  queryKey: ['favorites'],
+  queryFn: async () => {
+    const response = await newRequest.get("/favorites");
+    return response.data;
+  }
+});
+
 
   const handleFavoriteRemove = async (itemId, type) => {
     try {
-      const response = await newRequest.post("/favorites/toggle", {
+      await newRequest.post("/favorites/toggle", {
         itemId,
         type,
       });
-      if (!response.data.isFavorite) {
-        // Immediately remove from UI
-        setFavorites((prev) =>
-          prev.filter((fav) =>
-            type === "movie" ? fav.movieId !== itemId : fav.showId !== itemId
-          )
-        );
-      }
+      refetch();
     } catch (err) {
-      console.error(err);
+      console.error("Error toggling favorite:", err);
     }
   };
 
-  const getFavoriteContent = (favorite) => {
-    if (favorite.type === "movie") {
-      return movies.find((movie) => movie.imdbID === favorite.movieId);
-    } else {
-      return tvShows.find((show) => show.id === parseInt(favorite.showId));
-    }
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-400"></div>
@@ -93,7 +68,7 @@ const Favorites = () => {
           </button>
         </div>
 
-        {favorites.length === 0 ? (
+        {!favorites.length ? (
           <div className="flex flex-col items-center justify-center py-20">
             <img
               src="/folder.png"
@@ -108,37 +83,31 @@ const Favorites = () => {
             </p>
           </div>
         ) : (
-          <div
-            className={`flex flex-wrap ${
-              viewType === "list" ? "flex-col" : ""
-            }`}
-          >
+          <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
             {favorites.map((favorite) => {
-              const content = getFavoriteContent(favorite);
-              if (!content) return null;
-              return favorite.type === "movie" ? (
-                <MovieCard
-                  key={favorite.movieId}
-                  movie={content}
-                  viewType={viewType}
-                  isFavorite={true}
-                  isFeatured={content.Featured} // Add this line
-                  onFavoriteToggle={() =>
-                    handleFavoriteRemove(favorite.movieId, "movie")
-                  }
-                />
-              ) : (
-                <TvShowCard
-                  key={favorite.showId}
-                  show={content}
-                  viewType={viewType}
-                  isFavorite={true}
-                  isFeatured={content.Featured} // Add this line
-                  onFavoriteToggle={() =>
-                    handleFavoriteRemove(favorite.showId, "show")
-                  }
-                />
-              );
+              if (favorite.type === "movie" && favorite.movieData) {
+                return (
+                  <MovieCard
+                    key={favorite.movieData.id}
+                    movie={favorite.movieData}
+                    viewType={viewType}
+                    isFavorite={true}
+                    onFavoriteToggle={() => handleFavoriteRemove(favorite.movieData.id, "movie")}
+                  />
+                );
+              }
+              if (favorite.type === "show" && favorite.showData) {
+                return (
+                  <TvShowCard
+                    key={favorite.showData.id}
+                    show={favorite.showData}
+                    viewType={viewType}
+                    isFavorite={true}
+                    onFavoriteToggle={() => handleFavoriteRemove(favorite.showData.id, "show")}
+                  />
+                );
+              }
+              return null;
             })}
           </div>
         )}

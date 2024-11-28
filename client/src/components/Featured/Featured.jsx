@@ -6,12 +6,12 @@ import {
   searchFeaturedMovies,
   searchLatestMovies,
   getMovieDetails,
-} from "../../utils/movieApi.js";
+} from "../../utils/movieHelper.js";
 import {
   searchFeaturedShows,
   searchTopRatedShows,
   getShowDetails,
-} from "../../utils/tvApi.js";
+} from "../../utils/tvHelper.js";
 
 const Featured = () => {
   const [viewType, setViewType] = useState("grid");
@@ -20,35 +20,7 @@ const Featured = () => {
     queryKey: ["featuredMovies"],
     queryFn: async () => {
       const response = await searchFeaturedMovies();
-      const data = await response.json();
-
-      // Fetch details for each movie
-      const moviesWithDetails = await Promise.all(
-        data.results.slice(0, 20).map(async (movie) => {
-          const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse
-        })
-      );
-
-      return moviesWithDetails;
-    },
-  });
-
-  const latestMoviesQuery = useQuery({
-    queryKey: ["latestMovies"],
-    queryFn: async () => {
-      const response = await searchLatestMovies();
-      const data = await response.json();
-
-      // Fetch details for each movie
-      const moviesWithDetails = await Promise.all(
-        data.results.slice(0, 20).map(async (movie) => {
-          const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse
-        })
-      );
-
-      return moviesWithDetails;
+      return response.data.results || [];
     },
   });
 
@@ -56,16 +28,15 @@ const Featured = () => {
     queryKey: ["featuredTvShows"],
     queryFn: async () => {
       const response = await searchFeaturedShows();
-      const data = await response.json();
+      return response.data.results || [];
+    },
+  });
 
-      const showsWithDetails = await Promise.all(
-        data.results.slice(0, 20).map(async (show) => {
-          const detailsResponse = await getShowDetails(show.id);
-          return await detailsResponse
-        })
-      );
-
-      return showsWithDetails;
+  const latestMoviesQuery = useQuery({
+    queryKey: ["latestMovies"],
+    queryFn: async () => {
+      const response = await searchLatestMovies();
+      return response.data.results || [];
     },
   });
 
@@ -73,16 +44,7 @@ const Featured = () => {
     queryKey: ["latestTvShows"],
     queryFn: async () => {
       const response = await searchTopRatedShows();
-      const data = await response.json();
-
-      const showsWithDetails = await Promise.all(
-        data.results.slice(0, 20).map(async (show) => {
-          const detailsResponse = await getShowDetails(show.id);
-          return await detailsResponse
-        })
-      );
-
-      return showsWithDetails;
+      return response.data.results || [];
     },
   });
 
@@ -175,7 +137,7 @@ const Featured = () => {
       <div className="mb-12">
         <div className="flex items-center gap-2.5 ml-4 mb-6">
           <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
-          <h2 className="text-2xl font-bold mb-1">Movies</h2>
+          <h2 className="text-2xl font-bold mb-1">Latest Movies</h2>
         </div>
         <div
           className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}

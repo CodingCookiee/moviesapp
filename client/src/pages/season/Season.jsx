@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { useQuery } from "@tanstack/react-query";
-import { getShowDetails, getSeasonDetails } from "../../utils/tvApi";
+import { getShowDetails, getSeasonDetails } from "../../utils/tvHelper.js";
 
 const Season = () => {
   const { id, seasonNumber } = useParams();
@@ -10,15 +10,19 @@ const Season = () => {
   const [showEpisodes, setShowEpisodes] = useState(false);
 
   const { data: show } = useQuery({
-    queryKey: ['tvshow', id],
-    queryFn: () => getShowDetails(id)
+    queryKey: ["tvshow", id],
+    queryFn: () => getShowDetails(id),
   });
 
-  const { data: seasonDetails, isLoading, error } = useQuery({
-    queryKey: ['season', id, seasonNumber],
-    queryFn: () => getSeasonDetails(id, seasonNumber),
-    enabled: !!show
-  });
+  // Update season queries
+const { isLoading, error, data: seasonDetails } = useQuery({
+  queryKey: ['season', id, seasonNumber],
+  queryFn: async () => {
+    const response = await getSeasonDetails(id, seasonNumber);
+    return response.data;
+  }
+});
+
 
   if (isLoading) {
     return (
@@ -32,7 +36,9 @@ const Season = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
-        <h2 className="text-3xl font-bold mb-4 text-gray-800">Season Not Available</h2>
+        <h2 className="text-3xl font-bold mb-4 text-gray-800">
+          Season Not Available
+        </h2>
         <button
           onClick={() => navigate(`/tvshow/${id}`)}
           className="bg-yellow-400 hover:bg-[#efc949] text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300"
@@ -44,7 +50,9 @@ const Season = () => {
   }
 
   const trailerVideo = show.videos?.results?.find(
-    video => video.type === "Recap"  || video.type === "Teaser" && video.site === "YouTube"
+    (video) =>
+      video.type === "Recap" ||
+      (video.type === "Teaser" && video.site === "YouTube")
   );
 
   return (
@@ -74,7 +82,9 @@ const Season = () => {
             <div className="flex items-center gap-2">
               <span className="text-gray-600">{seasonDetails.air_date}</span>
               <span>•</span>
-              <span className="text-gray-600">{seasonDetails.episodes?.length} Episodes</span>
+              <span className="text-gray-600">
+                {seasonDetails.episodes?.length} Episodes
+              </span>
             </div>
             <p className="text-gray-700">{seasonDetails.overview}</p>
           </div>
@@ -89,14 +99,21 @@ const Season = () => {
             >
               <h2 className="text-2xl font-bold">Episodes</h2>
               <span className="transform transition-transform duration-200">
-                {showEpisodes ? <img src="/down-arrow.png" alt="" className="w-10 h-10" /> : <img src="/right-arrow.png" alt="" className="w-10 h-10" />}
+                {showEpisodes ? (
+                  <img src="/down-arrow.png" alt="" className="w-10 h-10" />
+                ) : (
+                  <img src="/right-arrow.png" alt="" className="w-10 h-10" />
+                )}
               </span>
             </div>
 
             {showEpisodes && (
               <div className="p-4 space-y-6">
                 {seasonDetails.episodes?.map((episode) => (
-                  <div key={episode.id} className="border-b last:border-b-0 pb-6 last:pb-0">
+                  <div
+                    key={episode.id}
+                    className="border-b last:border-b-0 pb-6 last:pb-0"
+                  >
                     <div className="flex gap-4">
                       {episode.still_path && (
                         <img
@@ -110,9 +127,13 @@ const Season = () => {
                           {episode.episode_number}. {episode.name}
                         </h3>
                         <div className="flex items-center gap-4 mb-2">
-                          <span className="text-gray-600">{episode.air_date}</span>
+                          <span className="text-gray-600">
+                            {episode.air_date}
+                          </span>
                           {episode.runtime && (
-                            <span className="text-gray-600">{episode.runtime} min</span>
+                            <span className="text-gray-600">
+                              {episode.runtime} min
+                            </span>
                           )}
                         </div>
                         <p className="text-gray-700">{episode.overview}</p>

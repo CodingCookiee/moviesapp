@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import newRequest from "../../utils/newRequest";
 import getCurrentUser from "../../utils/getCurrentUser";
+import { useQuery } from "@tanstack/react-query";
+import { getMovieDetails } from "../../utils/movieHelper.js";
 
 const MovieCard = ({ movie, viewType, isFeatured }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -9,6 +11,14 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
   const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
+
+  const { data: movieDetails } = useQuery({
+    queryKey: ["movieDetails", movie.id],
+    queryFn: async () => {
+      const response = await getMovieDetails(movie.id);
+      return response.data;
+    },
+  });
 
   useEffect(() => {
     const checkFavoriteStatus = async () => {
@@ -24,9 +34,10 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
     checkFavoriteStatus();
   }, [movie.id, currentUser]);
 
-  const cardClassName = viewType === "grid" 
-    ? "w-full sm:w-1/2 lg:w-1/4 p-4" 
-    : "w-3/5 h-2/3 self-center mb-4";
+  const cardClassName =
+    viewType === "grid"
+      ? "w-full sm:w-1/2 lg:w-1/4 p-4"
+      : "w-3/5 h-2/3 self-center mb-4";
 
   const handleFavorite = async (e) => {
     e.preventDefault();
@@ -108,21 +119,18 @@ const MovieCard = ({ movie, viewType, isFeatured }) => {
             {movie.title}
           </h3>
           <p className="text-gray-600 mb-2 line-clamp-1">
-            {movie.genres?.map(genre => genre.name).join(", ")}
+            {movieDetails?.genres?.map((genre) => genre.name).join(", ")}
           </p>
           <div className="flex justify-between items-center">
             <span className="text-lg font-bold">
               {new Date(movie.release_date).getFullYear()}
             </span>
-            <span className="text-gray-600">
-              {movie.runtime} min
-            </span>
+            <span className="text-gray-600">{movieDetails?.runtime} min</span>
           </div>
         </div>
       </div>
     </Link>
   );
 };
-
 
 export default MovieCard;

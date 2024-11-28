@@ -1,48 +1,45 @@
 import React, { useState } from "react";
 import MovieCard from "../../components/movieCard/movieCard";
 import { useQuery } from "@tanstack/react-query";
-import { searchFeaturedMovies, searchMovies, getMovieDetails } from "../../utils/movieAPI";
+import {
+  searchFeaturedMovies,
+  searchMovies,
+  getMovieDetails,
+} from "../../utils/movieHelper.js";
 
 const Movies = () => {
   const [viewType, setViewType] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
   const MAX_PAGES = 30;
 
-  const { isLoading: featuredLoading, error: featuredError, data: featuredMovies } = useQuery({
-    queryKey: ['featuredMovies'],
+  const {
+    isLoading: featuredLoading,
+    error: featuredError,
+    data: featuredMovies,
+  } = useQuery({
+    queryKey: ["featuredMovies"],
     queryFn: async () => {
       const response = await searchFeaturedMovies();
-      const data = await response.json();
-      
-      const moviesWithDetails = await Promise.all(
-        data.results.slice(0, 20).map(async (movie) => {
-          const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse;
-        })
-      );
-      
-      return moviesWithDetails;
-    }
+      return response.data.results || [];
+    },
   });
 
-  const { isLoading: allMoviesLoading, error: allMoviesError, data: allMoviesData } = useQuery({
-    queryKey: ['allMovies', currentPage],
+  console.log("featuredMovies:", featuredMovies);
+
+  const {
+    isLoading: allMoviesLoading,
+    error: allMoviesError,
+    data: allMoviesData,
+  } = useQuery({
+    queryKey: ["allMovies", currentPage],
     queryFn: async () => {
       const response = await searchMovies(currentPage);
-      const data = await response.json();
-      
-      const moviesWithDetails = await Promise.all(
-        data.results.map(async (movie) => {
-          const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse
-        })
-      );
-      
+      const data = response.data;
       return {
-        movies: moviesWithDetails,
-        totalPages: Math.min(data.total_pages, MAX_PAGES)
+        ...data,
+        total_pages: Math.min(data.total_pages, MAX_PAGES),
       };
-    }
+    },
   });
 
   if (featuredLoading) {
@@ -57,7 +54,9 @@ const Movies = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Something went wrong</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Something went wrong
+        </h2>
         <p className="text-gray-600">{featuredError.message}</p>
       </div>
     );
@@ -69,7 +68,9 @@ const Movies = () => {
         <div className="inline-flex items-center justify-center w-full mt-7">
           <hr className="w-full h-1 my-8 bg-gray-200 border-0 rounded" />
           <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2">
-            <h1 className="bg-white font-medium text-5xl text-gray-700">Movies</h1>
+            <h1 className="bg-white font-medium text-5xl text-gray-700">
+              Movies
+            </h1>
           </div>
         </div>
 
@@ -98,7 +99,9 @@ const Movies = () => {
             <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
             <h2 className="text-2xl font-bold">Featured Movies</h2>
           </div>
-          <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
+          <div
+            className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+          >
             {featuredMovies?.map((movie) => (
               <MovieCard
                 key={movie.id}
@@ -116,7 +119,7 @@ const Movies = () => {
             <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
             <h2 className="text-2xl font-bold">Movie Night</h2>
           </div>
-          
+
           {allMoviesLoading ? (
             <div className="flex justify-center py-8">
               <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-yellow-400"></div>
@@ -127,8 +130,10 @@ const Movies = () => {
             </div>
           ) : (
             <>
-              <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
-                {allMoviesData?.movies?.map((movie) => (
+              <div
+                className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+              >
+                {allMoviesData?.results?.map((movie) => (
                   <MovieCard
                     key={movie.id}
                     movie={movie}
@@ -140,17 +145,24 @@ const Movies = () => {
 
               <div className="flex justify-center items-center gap-2 my-8">
                 <button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
                   disabled={currentPage === 1}
                   className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
                 >
                   <img src="/previous.png" alt="" className="w-6 h-6" />
                 </button>
 
-                {Array.from({ length: Math.min(allMoviesData?.totalPages || 0, MAX_PAGES) }).map((_, index) => {
+                {Array.from({
+                  length: Math.min(allMoviesData?.total_pages || 0, MAX_PAGES),
+                }).map((_, index) => {
                   let start = Math.max(currentPage - 2, 1);
-                  let end = Math.min(start + 4, allMoviesData?.totalPages || 0);
-                  if (end === allMoviesData?.totalPages) {
+                  let end = Math.min(
+                    start + 4,
+                    allMoviesData?.total_pages || 0
+                  );
+                  if (end === allMoviesData?.total_pages) {
                     start = Math.max(end - 4, 1);
                   }
                   if (index + 1 >= start && index + 1 <= end) {
@@ -172,10 +184,18 @@ const Movies = () => {
                 })}
 
                 <button
-                  onClick={() => setCurrentPage((prev) => 
-                    Math.min(prev + 1, Math.min(allMoviesData?.totalPages || 1, MAX_PAGES))
-                  )}
-                  disabled={currentPage === Math.min(allMoviesData?.totalPages || 1, MAX_PAGES)}
+                  onClick={() =>
+                    setCurrentPage((prev) =>
+                      Math.min(
+                        prev + 1,
+                        Math.min(allMoviesData?.totalPages || 1, MAX_PAGES)
+                      )
+                    )
+                  }
+                  disabled={
+                    currentPage ===
+                    Math.min(allMoviesData?.totalPages || 1, MAX_PAGES)
+                  }
                   className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
                 >
                   <img src="/next.png" alt="" className="w-6 h-6" />

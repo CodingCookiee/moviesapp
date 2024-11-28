@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MovieCard from "../../components/movieCard/movieCard";
 import { useQuery } from "@tanstack/react-query";
-import { searchMoviesByGenre, getGenres } from "../../utils/movieAPI";
+import { searchMoviesByGenre, getGenres } from "../../utils/movieHelper.js";
 
 const Genre = () => {
   const { genreId } = useParams();
@@ -12,23 +12,33 @@ const Genre = () => {
   const MAX_PAGES = 30;
 
   const { data: genres } = useQuery({
-    queryKey: ['genres'],
-    queryFn: getGenres
-  });
-
-  const currentGenre = genres?.find(genre => genre.id === parseInt(genreId));
-
-  const { isLoading, error, data: moviesData } = useQuery({
-    queryKey: ['genreMovies', genreId, currentPage],
+    queryKey: ["genres"],
     queryFn: async () => {
-      const data = await searchMoviesByGenre(genreId, currentPage);
+      const response = await getGenres();
+      const data = await response.json();
+      return data;
+    },
+  });
+  console.log("Genres", genres);
+
+  const currentGenre = genres?.find((genre) => genre.id === parseInt(genreId));
+  console.log("Current Genre:",  currentGenre);
+  const {
+    isLoading,
+    error,
+    data: moviesData,
+  } = useQuery({
+    queryKey: ["genreMovies", genreId, currentPage],
+    queryFn: async () => {
+      const response = await searchMoviesByGenre(genreId, currentPage);
       return {
-        movies: data.results || [],
-        totalPages: Math.min(data.total_pages || 1, MAX_PAGES)
+        movies: response?.data?.results,
+        totalPages: Math.min(response.total_pages, MAX_PAGES),
       };
     },
-    enabled: Boolean(genreId)
+    enabled: Boolean(genreId),
   });
+  console.log("movies data",  moviesData?.data);
 
   if (isLoading) {
     return (
@@ -42,7 +52,9 @@ const Genre = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
-        <h2 className="text-3xl font-bold mb-4 text-gray-800">Something went wrong</h2>
+        <h2 className="text-3xl font-bold mb-4 text-gray-800">
+          Something went wrong
+        </h2>
         <button
           onClick={() => navigate("/movies")}
           className="bg-yellow-400 hover:bg-[#efc949] text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-300"
@@ -56,9 +68,13 @@ const Genre = () => {
   if (!moviesData?.movies?.length) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
-        <img src="/movie-error.png" alt="Not Found" className="w-32 h-32 mb-6" />
+        <img
+          src="/movie-error.png"
+          alt="Not Found"
+          className="w-32 h-32 mb-6"
+        />
         <h2 className="text-3xl font-bold mb-4 text-gray-800">
-          No Movies Available in {currentGenre?.name || 'this genre'}
+          No Movies Available in {currentGenre?.name || "this genre"}
         </h2>
         <button
           onClick={() => navigate("/movies")}
@@ -77,7 +93,7 @@ const Genre = () => {
           <hr className="w-full h-1 my-8 bg-gray-200 border-0 rounded" />
           <div className="absolute px-4 -translate-x-1/2 bg-white left-1/2">
             <h1 className="bg-white font-medium text-5xl text-gray-700 capitalize">
-              {currentGenre?.name || 'Genre'}
+              {currentGenre?.name || "Genre"}
             </h1>
           </div>
         </div>
@@ -101,8 +117,10 @@ const Genre = () => {
           </button>
         </div>
 
-        <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
-          {moviesData.movies.map((movie) => (
+        <div
+          className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+        >
+          {moviesData?.movies?.map((movie) => (
             <MovieCard
               key={movie.id}
               movie={{
@@ -112,7 +130,7 @@ const Genre = () => {
                 vote_average: movie.vote_average,
                 overview: movie.overview,
                 release_date: movie.release_date,
-                genre_ids: movie.genre_ids
+                genre_ids: movie.genre_ids,
               }}
               viewType={viewType}
               isFeatured={false}
@@ -129,14 +147,16 @@ const Genre = () => {
             <img src="/previous.png" alt="" className="w-6 h-6" />
           </button>
 
-          {Array.from({ length: Math.min(moviesData.totalPages, MAX_PAGES) }).map((_, index) => {
+          {Array.from({
+            length: Math.min(moviesData.totalPages, MAX_PAGES),
+          }).map((_, index) => {
             let start = Math.max(currentPage - 2, 1);
             let end = Math.min(start + 4, moviesData.totalPages, MAX_PAGES);
-            
+
             if (end === moviesData.totalPages || end === MAX_PAGES) {
               start = Math.max(end - 4, 1);
             }
-            
+
             if (index + 1 >= start && index + 1 <= end) {
               return (
                 <button
@@ -156,9 +176,11 @@ const Genre = () => {
           })}
 
           <button
-            onClick={() => setCurrentPage((prev) => 
-              Math.min(prev + 1, moviesData.totalPages, MAX_PAGES)
-            )}
+            onClick={() =>
+              setCurrentPage((prev) =>
+                Math.min(prev + 1, moviesData.totalPages, MAX_PAGES)
+              )
+            }
             disabled={currentPage >= Math.min(moviesData.totalPages, MAX_PAGES)}
             className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
           >

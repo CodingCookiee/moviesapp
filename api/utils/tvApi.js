@@ -1,5 +1,8 @@
-const accessToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
+import dotenv from 'dotenv';
+dotenv.config();
 
+
+const accessToken = process.env.TMDB_ACCESS_TOKEN;
 
 export const searchShows = async (page = 1) => {
   const url = `https://api.themoviedb.org/3/discover/tv?language=en-US&sort_by=popularity.desc&page=${page}`;
@@ -10,11 +13,8 @@ export const searchShows = async (page = 1) => {
       Authorization: `Bearer ${accessToken}`
     }
   };
-  return await fetch(url, options);
+  return fetch(url, options);
 };
-
-
-
 
 export const searchFeaturedShows = async () => {
   const url = 'https://api.themoviedb.org/3/trending/tv/day?language=en-US';
@@ -25,7 +25,7 @@ export const searchFeaturedShows = async () => {
       Authorization: `Bearer ${accessToken}`
     }
   };
-  return await fetch(url, options);
+  return fetch(url, options);
 };
 
 export const searchTopRatedShows = async () => {
@@ -37,7 +37,7 @@ export const searchTopRatedShows = async () => {
       Authorization: `Bearer ${accessToken}`
     }
   };
-  return await fetch(url, options);
+  return fetch(url, options);
 };
 
 export const getShowDetails = async (showId) => {
@@ -49,17 +49,11 @@ export const getShowDetails = async (showId) => {
       Authorization: `Bearer ${accessToken}`
     }
   };
-  try {
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching show details:', error);
-    throw error;
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
+  return response;
 };
 
 export const getSeasonDetails = async (showId, seasonNumber) => {
@@ -71,14 +65,5 @@ export const getSeasonDetails = async (showId, seasonNumber) => {
       Authorization: `Bearer ${accessToken}`
     }
   };
-  const response = await fetch(url, options);
-  return response.json();
+  return fetch(url, options);
 };
-
-
-
-
-
-
-
-

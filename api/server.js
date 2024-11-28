@@ -8,6 +8,8 @@ import authRoute from './routes/auth.route.js';
 import favoritesRoute from './routes/favorites.route.js';
 import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler.js';
+import movieRoutes from './routes/movies.route.js';
+import tvRoutes from './routes/tv.route.js';
 
 
 dotenv.config();
@@ -31,7 +33,8 @@ app.use(
 app.use('/api/auth', authRoute);
 app.use('/api/users', userRoute);
 app.use('/api/favorites', favoritesRoute);
-// Add this near your other routes
+app.use('/api/movies', movieRoutes);
+app.use('/api/tv', tvRoutes);
 app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'healthy',

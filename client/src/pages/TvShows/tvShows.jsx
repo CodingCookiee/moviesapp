@@ -5,49 +5,29 @@ import {
   searchFeaturedShows,
   searchShows,
   getShowDetails,
-} from "../../utils/tvApi";
+} from "../../utils/tvHelper.js";
 
 const TvShows = () => {
   const [viewType, setViewType] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
   const MAX_PAGES = 30;
 
-  const { isLoading: featuredLoading, error: featuredError, data: featuredShows } = useQuery({
+  const { isLoading  : featuredLoading, error: featuredError,data: featuredShows } = useQuery({
     queryKey: ['featuredShows'],
     queryFn: async () => {
       const response = await searchFeaturedShows();
-      const data = await response.json();
-      
-      const showsWithDetails = await Promise.all(
-        data.results.slice(0, 20).map(async (show) => {
-          const detailsResponse = await getShowDetails(show.id);
-          return await detailsResponse
-        })
-      );
-      
-      return showsWithDetails;
+      return response.data.results || [];
     }
   });
-
-  const { isLoading: allShowsLoading, error: allShowsError, data: allShowsData } = useQuery({
+  
+  const { isLoading : allShowsLoading, error: allShowsError, data: allShowsData } = useQuery({
     queryKey: ['allShows', currentPage],
     queryFn: async () => {
       const response = await searchShows(currentPage);
-      const data = await response.json();
-      
-      const showsWithDetails = await Promise.all(
-        data.results.map(async (show) => {
-          const detailsResponse = await getShowDetails(show.id);
-          return await detailsResponse
-        })
-      );
-      
-      return {
-        shows: showsWithDetails,
-        totalPages: Math.min(data.total_pages, MAX_PAGES)
-      };
+      return response.data;
     }
   });
+  
 
   if (featuredLoading) {
     return (

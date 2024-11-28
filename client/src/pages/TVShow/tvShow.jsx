@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { useQuery } from "@tanstack/react-query";
-import { getShowDetails } from "../../utils/tvApi";
+import { getShowDetails } from "../../utils/tvHelper.js";
 
 const TvShow = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState({});
 
-  const {
-    data: show,
-    isLoading,
-    error,
-  } = useQuery({
+
+  const { data: show, isLoading, error } = useQuery({
     queryKey: ["tvshow", id],
-    queryFn: () => getShowDetails(id),
+    queryFn: async () => {
+      const response = await getShowDetails(id);
+      return response.data;
+    }
   });
 
   if (isLoading) {
@@ -51,6 +51,10 @@ const TvShow = () => {
     (video) => video.type === "Trailer" && video.site === "YouTube"
   );
   const watchProviders = show["watch/providers"]?.results?.US;
+
+  const seasons = show.seasons?.filter(season => season.season_number !== 0) || [];
+  const genres = show.genres || [];
+  const networks = show.networks || [];
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -111,7 +115,7 @@ const TvShow = () => {
                 <span className="text-yellow-400 text-2xl font-bold mr-2.5">
                   |
                 </span>
-                {show.genres.map((genre) => (
+                {genres.map((genre) => (
                   <span
                     key={genre.id}
                     className="mt-1 bg-gray-100 px-3 py-1 rounded-full text-sm"
@@ -137,7 +141,7 @@ const TvShow = () => {
             <div>
               <h2 className="text-xl font-semibold mb-2">Networks</h2>
               <div className="flex gap-4">
-                {show.networks?.map((network) => (
+                {networks?.map((network) => (
                   <img
                     key={network.id}
                     src={`https://image.tmdb.org/t/p/w92${network.logo_path}`}
@@ -153,12 +157,12 @@ const TvShow = () => {
 
       {/* Seasons Section */}
       <div className="mt-12 relative">
-      <div className="flex items-center mb-6 gap-2.5">
-      <span className="text-yellow-400 text-3xl font-extrabold ">|</span> 
-      <h2 className="text-2xl font-bold "> Seasons</h2>
-      </div>
+        <div className="flex items-center mb-6 gap-2.5">
+          <span className="text-yellow-400 text-3xl font-extrabold ">|</span>
+          <h2 className="text-2xl font-bold "> Seasons</h2>
+        </div>
         <div className="flex flex-wrap gap-4 md:grid-cols-4">
-          {show.seasons
+          {seasons
             .filter((season) => season.season_number !== 0)
             .map((season) => (
               <div
@@ -174,17 +178,19 @@ const TvShow = () => {
                   navigate(`/season/${show.id}/${season.season_number}`)
                 }
               >
-                <div className=''>
-                <img
-                  src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
-                  alt={season.name}
-                  className="w-48 h-[300px] object-cover rounded-lg shadow-md 
+                <div className="">
+                  <img
+                    src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
+                    alt={season.name}
+                    className="w-48 h-[300px] object-cover rounded-lg shadow-md 
                   hover:shadow-[0_0_20px_10px_#efc949] transition-shadow duration-300"
-                />
+                  />
                 </div>
                 {isHovered[season.id] && (
-                  <div className="absolute top-28 right-16  bg-opacity-50 rounded-lg flex 
-                  items-center justify-center transition-all duration-300">
+                  <div
+                    className="absolute top-28 right-16  bg-opacity-50 rounded-lg flex 
+                  items-center justify-center transition-all duration-300"
+                  >
                     <img
                       src="/play-button.png"
                       alt="play"

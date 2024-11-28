@@ -4,7 +4,7 @@ import "./Navbar.css";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getGenres } from "../../utils/movieAPI";
+import { getGenres } from "../../utils/movieHelper.js";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
@@ -14,12 +14,12 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-// Update the genres query
+
 const { data: genres = [] } = useQuery({
   queryKey: ['genres'],
   queryFn: async () => {
-    const genresData = await getGenres();
-    return genresData || [];
+    const response = await newRequest.get("/movies/genres");
+    return response.data.genres || [];
   },
   staleTime: 300000, 
   cacheTime: 3600000, 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MovieCard from "../../components/movieCard/movieCard";
 import { useQuery } from "@tanstack/react-query";
-import { searchFeaturedMovies, searchLatestMovies, getMovieDetails } from "../../utils/movieAPI";
+import { searchFeaturedMovies, searchLatestMovies, getMovieDetails } from "../../utils/movieHelper.js";
 
 const Top50 = () => {
   const [viewType, setViewType] = useState("grid");
@@ -10,35 +10,18 @@ const Top50 = () => {
     queryKey: ['top25Featured'],
     queryFn: async () => {
       const response = await searchFeaturedMovies();
-      const data = await response.json();
-      
-      const moviesWithDetails = await Promise.all(
-        data.results.slice(0, 25).map(async (movie) => {
-          const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse;
-        })
-      );
-      
-      return moviesWithDetails;
+      return response.data.results || [];
     }
   });
-
+  
   const { isLoading: latestLoading, error: latestError, data: latestMovies } = useQuery({
     queryKey: ['top25Latest'],
     queryFn: async () => {
       const response = await searchLatestMovies();
-      const data = await response.json();
-      
-      const moviesWithDetails = await Promise.all(
-        data.results.slice(0, 25).map(async (movie) => {
-          const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse
-        })
-      );
-      
-      return moviesWithDetails;
+      return response.data.results || [];
     }
   });
+  
 
   if (featuredLoading || latestLoading) {
     return (
