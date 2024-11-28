@@ -21,8 +21,8 @@ const { data: genres = [] } = useQuery({
     const genresData = await getGenres();
     return genresData || [];
   },
-  staleTime: 300000, // Cache for 5 minutes
-  cacheTime: 3600000, // Keep in cache for 1 hour
+  staleTime: 300000, 
+  cacheTime: 3600000, 
 });
 
 
