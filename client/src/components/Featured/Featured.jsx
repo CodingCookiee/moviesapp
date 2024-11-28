@@ -26,7 +26,7 @@ const Featured = () => {
       const moviesWithDetails = await Promise.all(
         data.results.slice(0, 20).map(async (movie) => {
           const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse.json();
+          return await detailsResponse
         })
       );
 
@@ -44,7 +44,7 @@ const Featured = () => {
       const moviesWithDetails = await Promise.all(
         data.results.slice(0, 20).map(async (movie) => {
           const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse.json();
+          return await detailsResponse
         })
       );
 

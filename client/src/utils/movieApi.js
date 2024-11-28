@@ -91,14 +91,14 @@ export const searchMoviesByGenre = async (genreId, page = 1) => {
     return data;
   } catch (error) {
     console.error("Error fetching movies by genre:", error);
-    return { results: [], total_pages: 0 }; // Return empty results on error
+    return { results: [], total_pages: 0 }; 
   }
 };
 
 
 
 export const getMovieDetails = async (movieId) => {
-  const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`;
+  const url = `https://api.themoviedb.org/3/movie/${movieId}?language=en-US&append_to_response=videos,credits`;
   const options = {
     method: "GET",
     headers: {
@@ -106,5 +106,20 @@ export const getMovieDetails = async (movieId) => {
       Authorization: `Bearer ${accessToken}`,
     },
   };
-  return await fetch(url, options);
+  
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching movie details:', error);
+    console.log('Response status:', error.status);
+    console.log('Response data:', error.data);
+    throw error; // Re-throw to be handled by React Query
+  }
 };
+
+

@@ -15,7 +15,7 @@ const Top50 = () => {
       const moviesWithDetails = await Promise.all(
         data.results.slice(0, 25).map(async (movie) => {
           const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse.json();
+          return await detailsResponse;
         })
       );
       
@@ -32,7 +32,7 @@ const Top50 = () => {
       const moviesWithDetails = await Promise.all(
         data.results.slice(0, 25).map(async (movie) => {
           const detailsResponse = await getMovieDetails(movie.id);
-          return await detailsResponse.json();
+          return await detailsResponse
         })
       );
       
