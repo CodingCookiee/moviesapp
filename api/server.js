@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -38,6 +37,9 @@ app.get("/health", (req, res) => {
     status: "healthy",
     timestamp: new Date().toISOString(),
   });
+});
+app.get("/", (req, res) => {
+  res.send("The Server is running : Use /api to Run Tests");
 });
 
 app.use(errorHandler);
