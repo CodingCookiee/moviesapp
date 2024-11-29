@@ -3,7 +3,7 @@
 
 
 
-## [🔗LiveDemo]() 
+## [🔗LiveDemo](https://moviesapp-chi-five.vercel.app) 
 
 
 ![App Screenshot](./client/public/app.png)
