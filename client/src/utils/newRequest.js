@@ -1,11 +1,12 @@
 import axios from "axios";
 
 const newRequest = axios.create({
-  baseURL: "http://localhost:8000/api/",
+  baseURL: "https://moviesapp-api-theta.vercel.app/api",
+  timeout: 15000,
   withCredentials: true,
   headers: {
-    "Content-Type": "application/json",
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 export default newRequest;

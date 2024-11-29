@@ -13,25 +13,28 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const loginData =
-      identifier.includes("@") ||
-      identifier.includes("gmail") ||
-      identifier.includes(".com") ||
-      identifier.includes(".net") ||
+    setError(null);
+    
+    const loginData = identifier.includes("@") || 
+      identifier.includes("gmail") || 
+      identifier.includes(".com") || 
+      identifier.includes(".net") || 
       identifier.includes(".org")
         ? { email: identifier, password }
         : { username: identifier, password };
 
     try {
       const response = await newRequest.post("/auth/login", loginData);
-      if (response && response.data) {
+      if (response?.data) {
         localStorage.setItem("currentUser", JSON.stringify(response.data));
         navigate("/");
       }
     } catch (err) {
+      console.log('Login error:', err);
       setError(err?.response?.data || "Login failed. Please try again.");
     }
-  };
+};
+
 
 
   return (
