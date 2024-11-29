@@ -13,6 +13,7 @@
  - MERN Stack
  - Tailwind CSS
  - Jwt & Bcrypt (uAuth)
+ - Cloudinary
  - Pagination & Search Filters 
  - TMBD Api
    
