@@ -117,7 +117,7 @@ const Season = () => {
             </div>
 
             {showEpisodes && (
-              <div className="p-4 space-y-6" cursor-pointer>
+              <div className="p-4 space-y-6 cursor-pointer" >
                 {seasonDetails.episodes?.map((episode) => (
                   <div
                     key={episode.id}
