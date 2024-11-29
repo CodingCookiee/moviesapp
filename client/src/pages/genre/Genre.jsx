@@ -21,7 +21,7 @@ const Genre = () => {
   });
 
   const currentGenre = genres?.find((genre) => genre.id === parseInt(genreId));
-  console.log("Current Genre:", currentGenre);
+ 
   const {
     isLoading,
     error,
