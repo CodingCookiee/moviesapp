@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const newRequest = axios.create({
-  baseURL: "https://moviesapp-api-theta.vercel.app/api",
+  baseURL: "https://moviesapp.up.railway.app/api",
   timeout: 30000, // Increased timeout
   withCredentials: true,
   headers: {
