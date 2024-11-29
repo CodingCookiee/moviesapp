@@ -56,7 +56,7 @@ const Movie = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Video Player Section */}
-      {trailerVideo && (
+      {trailerVideo ? (
         <div className="w-full aspect-video mb-8 bg-gray-900 rounded-xl overflow-hidden">
           <ReactPlayer
             url={`https://www.youtube.com/watch?v=${trailerVideo.key}`}
@@ -64,6 +64,13 @@ const Movie = () => {
             height="100%"
             controls
           />
+        </div>
+      ) : (
+        <div className="min-h-full mb-32 p-16 flex flex-col items-center justify-center">
+          <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
+          <h2 className="text-3xl font-bold mb-4 text-gray-800 ">
+            Trailer Not Available
+          </h2>
         </div>
       )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
