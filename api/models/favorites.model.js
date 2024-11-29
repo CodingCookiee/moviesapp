@@ -1,16 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const favoriteSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   },
   movieId: String,
   showId: String,
   type: {
     type: String,
-    enum: ['movie', 'show'],
+    enum: ["movie", "show"],
     required: true,
   },
   favoriteState: {
@@ -23,4 +23,4 @@ const favoriteSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('Favorite', favoriteSchema);
+export default mongoose.model("Favorite", favoriteSchema);

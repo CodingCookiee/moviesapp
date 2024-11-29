@@ -6,7 +6,7 @@ import {
   searchMoviesByGenre,
   searchLatestMovies,
   searchMoviesByQuery,
-} from '../utils/movieApi.js';
+} from "../utils/movieApi.js";
 
 export const getMoviesByQuery = async (req, res, next) => {
   try {

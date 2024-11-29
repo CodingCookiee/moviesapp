@@ -5,7 +5,7 @@ import {
   getSeasonDetails,
   searchTopRatedShows,
   searchTvByQuery,
-} from '../utils/tvApi.js';
+} from "../utils/tvApi.js";
 
 export const getTvByQuery = async (req, res, next) => {
   try {
@@ -56,7 +56,7 @@ export const getShowById = async (req, res, next) => {
     const data = await response.json();
     res.status(200).json(data);
   } catch (err) {
-    res.status(404).json({ message: 'Show not found' });
+    res.status(404).json({ message: "Show not found" });
   }
 };
 
