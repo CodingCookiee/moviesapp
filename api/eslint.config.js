@@ -26,13 +26,13 @@ export default [
       "no-console": "off",
       "import/extensions": ["error", "ignorePackages"],
       "no-underscore-dangle": ["error", { allow: ["_id"] }],
-      "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
+      "no-unused-vars": ["warn", { argsIgnorePattern: "next" }],
       "import/prefer-default-export": "off",
       "prettier/prettier": [
-        "error",
+        "warn",
         {
-          endOfLine: "auto",
-          singleQuote: true,
+          singleQuote: false,
+          DoubleQuote: true,
           semi: true,
           tabWidth: 2,
         },

@@ -7,7 +7,7 @@ import {
   getMoviesByGenre,
   getLatestMovies,
   getMoviesByQuery,
-} from "../controllers/movies.controller.js";
+} from "../Controllers/movies.controller.js";
 
 const router = express.Router();
 
