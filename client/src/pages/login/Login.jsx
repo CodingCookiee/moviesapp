@@ -24,12 +24,15 @@ const Login = () => {
 
     try {
       const response = await newRequest.post("/auth/login", loginData);
-      localStorage.setItem("currentUser", JSON.stringify(response.data));
-      navigate("/");
+      if (response && response.data) {
+        localStorage.setItem("currentUser", JSON.stringify(response.data));
+        navigate("/");
+      }
     } catch (err) {
-      setError(err.response.data);
+      setError(err?.response?.data || "Login failed. Please try again.");
     }
   };
+
 
   return (
     <div className="container flex justify-center items-center h-full mx-auto px-4 py-8">

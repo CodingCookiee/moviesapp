@@ -16,6 +16,7 @@
     "@vercel/speed-insights": "^1.1.0",
     "axios": "^1.7.7",
     "cloudinary": "^2.5.1",
+    "pandaplay": "file:",
     "dotenv": "^16.4.5",
     "heroicons": "^2.2.0",
     "heroicons-react": "^1.4.1",
