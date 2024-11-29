@@ -156,7 +156,7 @@ const Featured = () => {
           <div className="">
             <div className="h-[40px]  bg-yellow-400 w-[10px]"></div>
           </div>
-          <h2 className="text-2xl font-bold mb-1">Latest Seasons</h2>
+          <h2 className="text-2xl font-bold mb-1">Latest Tv Shows</h2>
         </div>
         <div
           className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
