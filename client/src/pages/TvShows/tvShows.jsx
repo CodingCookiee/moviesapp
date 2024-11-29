@@ -39,7 +39,6 @@ const TvShows = () => {
       };
     },
   });
- 
 
   if (featuredLoading) {
     return (
@@ -187,8 +186,8 @@ const TvShows = () => {
                     setCurrentPage((prev) =>
                       Math.min(
                         prev + 1,
-                        Math.min(allShowsData?.totalPages || 1, MAX_PAGES)
-                      )
+                        Math.min(allShowsData?.totalPages || 1, MAX_PAGES),
+                      ),
                     )
                   }
                   disabled={

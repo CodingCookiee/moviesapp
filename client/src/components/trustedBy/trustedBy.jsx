@@ -1,7 +1,7 @@
 import React from "react";
 
 const TrustedBy = () => {
-    const imgClass = "h-[50px] object-contain"
+  const imgClass = "h-[50px] object-contain";
   return (
     <div className="trustedB bg-[#fafafa] flex justify-center items-center h-[100px] ">
       <div className="container w-[760px] flex items-center justify-center gap-5 text-slate-500 ">
@@ -9,7 +9,7 @@ const TrustedBy = () => {
         <img
           src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/apps/facebook2x.188a797.png"
           alt=""
-          className={imgClass} 
+          className={imgClass}
         />
         <img
           src="https://fiverr-res.cloudinary.com/npm-assets/@fiverr/logged_out_homepage_perseus/apps/google2x.06d74c8.png"

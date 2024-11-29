@@ -158,7 +158,7 @@ const Movies = () => {
                   let start = Math.max(currentPage - 2, 1);
                   let end = Math.min(
                     start + 4,
-                    allMoviesData?.total_pages || 0
+                    allMoviesData?.total_pages || 0,
                   );
                   if (end === allMoviesData?.total_pages) {
                     start = Math.max(end - 4, 1);
@@ -186,8 +186,8 @@ const Movies = () => {
                     setCurrentPage((prev) =>
                       Math.min(
                         prev + 1,
-                        Math.min(allMoviesData?.totalPages || 1, MAX_PAGES)
-                      )
+                        Math.min(allMoviesData?.totalPages || 1, MAX_PAGES),
+                      ),
                     )
                   }
                   disabled={

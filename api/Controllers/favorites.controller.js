@@ -7,13 +7,13 @@ export const checkFavoriteStatus = async (req, res, next) => {
   try {
     const userId = req.userId;
     const { itemId } = req.params;
-    
-    const favorite = await Favorite.findOne({ 
+
+    const favorite = await Favorite.findOne({
       userId,
       $or: [
-        { movieId: itemId, favoriteState: true }, 
-        { showId: itemId, favoriteState: true }
-      ]
+        { movieId: itemId, favoriteState: true },
+        { showId: itemId, favoriteState: true },
+      ],
     });
 
     return res.status(200).json({ isFavorite: !!favorite });
@@ -27,9 +27,9 @@ export const toggleFavorite = async (req, res, next) => {
     const userId = req.userId;
     const { itemId, type } = req.body;
 
-    const existing = await Favorite.findOne({ 
-      userId, 
-      [type === 'movie' ? 'movieId' : 'showId']: itemId 
+    const existing = await Favorite.findOne({
+      userId,
+      [type === "movie" ? "movieId" : "showId"]: itemId,
     });
 
     if (existing) {
@@ -40,9 +40,9 @@ export const toggleFavorite = async (req, res, next) => {
 
     const newFavorite = new Favorite({
       userId,
-      [type === 'movie' ? 'movieId' : 'showId']: itemId,
+      [type === "movie" ? "movieId" : "showId"]: itemId,
       type,
-      favoriteState: true
+      favoriteState: true,
     });
     await newFavorite.save();
     return res.status(201).json({ isFavorite: true });
@@ -53,15 +53,15 @@ export const toggleFavorite = async (req, res, next) => {
 
 export const getFavorites = async (req, res, next) => {
   try {
-    const favorites = await Favorite.find({ 
+    const favorites = await Favorite.find({
       userId: req.userId,
-      favoriteState: true 
+      favoriteState: true,
     });
 
     const populatedFavorites = await Promise.all(
       favorites.map(async (favorite) => {
         try {
-          if (favorite.type === 'movie') {
+          if (favorite.type === "movie") {
             const response = await getMovieDetails(favorite.movieId);
             const movieData = await response.json();
             return { ...favorite.toObject(), movieData };
@@ -71,12 +71,15 @@ export const getFavorites = async (req, res, next) => {
             return { ...favorite.toObject(), showData };
           }
         } catch (error) {
-          console.error(`Error fetching details for ${favorite.type} ${favorite.movieId || favorite.showId}:`, error);
+          console.error(
+            `Error fetching details for ${favorite.type} ${favorite.movieId || favorite.showId}:`,
+            error,
+          );
           return favorite.toObject();
         }
-      })
+      }),
     );
-    
+
     res.status(200).json(populatedFavorites);
   } catch (err) {
     next(createError(500, "Error fetching favorites"));

@@ -7,20 +7,20 @@ const ToggleSwitch = ({ checked, onChange, id, name }) => {
       <label className="switch relative inline-block w-14 h-7">
         <input
           type="checkbox"
-          onChange={onChange}     // Trigger parent-provided handler
+          onChange={onChange} // Trigger parent-provided handler
           className="opacity-0 w-0 h-0"
-          id={id}                 // Set passed `id`
-          name={name}             // Set passed `name`
-          checked={checked}       // Controlled by parent
+          id={id} // Set passed `id`
+          name={name} // Set passed `name`
+          checked={checked} // Controlled by parent
         />
-        
+
         {/* Background Slider */}
         <span
           className={`slider absolute cursor-pointer inset-0 transition-colors duration-300 ease-in-out rounded-full ${
             checked ? "bg-[#1dbf73]" : "bg-gray-300"
           }`}
         ></span>
-        
+
         {/* Toggle Circle with Icon */}
         <span
           className={`absolute h-5 w-5 bg-white rounded-full flex items-center justify-center transition-transform duration-300 ease-in-out transform ${

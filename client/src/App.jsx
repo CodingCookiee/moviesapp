@@ -27,7 +27,6 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
-
 const App = () => {
   const queryClient = new QueryClient();
 
@@ -67,7 +66,7 @@ const App = () => {
         },
         {
           path: "/genre/:genreId",
-          element: <Genre />
+          element: <Genre />,
         },
         {
           path: "/top50",
@@ -86,8 +85,8 @@ const App = () => {
           element: <TvShow />,
         },
         {
-          path: "/season/:id/:seasonNumber", 
-          element: <Season />
+          path: "/season/:id/:seasonNumber",
+          element: <Season />,
         },
         {
           path: "/search",

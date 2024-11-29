@@ -1,4 +1,4 @@
-import './slides.css';
+import "./slides.css";
 import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -13,14 +13,20 @@ const PrevArrow = ({ onClick }) => (
 );
 
 const NextArrow = ({ onClick, isProjectSlide }) => (
-  <button onClick={onClick} className="next-arrow" style={{ right: isProjectSlide ? '50px' : '28px' }}>
+  <button
+    onClick={onClick}
+    className="next-arrow"
+    style={{ right: isProjectSlide ? "50px" : "28px" }}
+  >
     <FaArrowRight />
   </button>
 );
 
 const Slide = ({ children, slidesToShow }) => {
   const childrenArray = React.Children.toArray(children);
-  const isProjectSlide = childrenArray.some(child => child.type === ProjectCard);
+  const isProjectSlide = childrenArray.some(
+    (child) => child.type === ProjectCard,
+  );
 
   const settings = {
     dots: true,
@@ -35,23 +41,21 @@ const Slide = ({ children, slidesToShow }) => {
         breakpoint: 1024,
         settings: {
           slidesToShow: Math.min(3, childrenArray.length),
-        }
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: Math.min(2, childrenArray.length),
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 
   return (
     <div className="slide flex justify-center p-[100px] pl-0 pr-0">
       <div className="container w-[1400px]">
-        <Slider {...settings}>
-          {childrenArray}
-        </Slider>
+        <Slider {...settings}>{childrenArray}</Slider>
       </div>
     </div>
   );

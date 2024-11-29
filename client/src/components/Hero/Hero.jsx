@@ -11,7 +11,6 @@ const Hero = () => {
       navigate(`/search?q=${encodeURIComponent(input.trim())}`);
     }
   };
-  
 
   return (
     <div className="featured flex flex-col items-center justify-center bg-[#0c1d22] min-h-[600px] text-white gap-6 md:gap-10 px-4 py-8 md:py-12">
@@ -53,8 +52,9 @@ const Hero = () => {
       <div className="flex flex-col gap-4 md:gap-2.5 w-full md:w-4/5 px-4">
         <h1 className="text-2xl md:text-4xl font-semibold text-center">
           <span className="text-yellow-400 hover:text-[#efc949]">Panda</span>
-          Play – The Best Place to Watch <i>Free Movies</i> and <i>TVShows</i>{" "}
-          Online
+          Play – The Best Place to Watch <i>
+            Free Movies
+          </i> and <i>TVShows</i> Online
         </h1>
 
         <p className="text-base md:text-lg text-center leading-relaxed md:leading-7">

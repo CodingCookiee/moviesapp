@@ -2,7 +2,7 @@ import "./add.css";
 import React, { useState } from "react";
 import { gigReducer, INITIAL_STATE } from "../../reducers/gigReducer";
 import upload from "../../utils/upload";
-import {useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import { useNavigate } from "react-router-dom";
 
@@ -44,7 +44,7 @@ const Add = () => {
         [...files].map(async (file) => {
           const url = await upload(file);
           return url;
-        })
+        }),
       );
       setUploading(false);
       dispatch({

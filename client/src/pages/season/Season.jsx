@@ -15,16 +15,19 @@ const Season = () => {
   });
 
   // Update season queries
-const { isLoading, error, data: seasonDetails } = useQuery({
-  queryKey: ['season', id, seasonNumber],
-  queryFn: async () => {
-    const response = await getSeasonDetails(id, seasonNumber);
-    return response.data;
-  }
-});
+  const {
+    isLoading,
+    error,
+    data: seasonDetails,
+  } = useQuery({
+    queryKey: ["season", id, seasonNumber],
+    queryFn: async () => {
+      const response = await getSeasonDetails(id, seasonNumber);
+      return response.data;
+    },
+  });
 
-console.log(seasonDetails);
-
+  console.log(seasonDetails);
 
   if (isLoading) {
     return (
@@ -54,7 +57,7 @@ console.log(seasonDetails);
   const trailerVideo = seasonDetails.videos?.results?.find(
     (video) =>
       video.type === "Recap" ||
-      (video.type === "Teaser"  && video.site === "YouTube")
+      (video.type === "Teaser" && video.site === "YouTube"),
   );
 
   return (

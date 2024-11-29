@@ -145,7 +145,7 @@ const Genre = () => {
                     viewType={viewType}
                     isFeatured={false}
                   />
-                ))} 
+                ))}
               </div>
               {/* Pagination */}
               <div className="flex justify-center items-center gap-2 my-8">
@@ -190,8 +190,8 @@ const Genre = () => {
                     setCurrentPage((prev) =>
                       Math.min(
                         prev + 1,
-                        Math.min(moviesData?.totalPages || 1, MAX_PAGES)
-                      )
+                        Math.min(moviesData?.totalPages || 1, MAX_PAGES),
+                      ),
                     )
                   }
                   disabled={

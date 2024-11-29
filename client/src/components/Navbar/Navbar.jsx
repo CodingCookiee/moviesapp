@@ -11,26 +11,23 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [openGenres, setOpenGenres] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [ showMiniSearch, setShowMiniSearch ] = useState(false);
-  const [ searchInput, setSearchInput ] = useState("");
-
+  const [showMiniSearch, setShowMiniSearch] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-const { data: genres = [] } = useQuery({
-  queryKey: ['genres'],
-  queryFn: async () => {
-    const response = await newRequest.get("/movies/genres");
-    return response.data.genres || [];
-  },
-  staleTime: 300000, 
-  cacheTime: 3600000, 
-});
-
-
+  const { data: genres = [] } = useQuery({
+    queryKey: ["genres"],
+    queryFn: async () => {
+      const response = await newRequest.get("/movies/genres");
+      return response.data.genres || [];
+    },
+    staleTime: 300000,
+    cacheTime: 3600000,
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,8 +40,9 @@ const { data: genres = [] } = useQuery({
 
   useEffect(() => {
     const handleScroll = () => {
-      if (pathname === '/') {
-        const heroHeight = document.querySelector('.featured')?.offsetHeight || 0;
+      if (pathname === "/") {
+        const heroHeight =
+          document.querySelector(".featured")?.offsetHeight || 0;
         const scrollPosition = window.scrollY;
         setActive(scrollPosition > 0);
         setShowMiniSearch(scrollPosition > heroHeight);
@@ -65,7 +63,6 @@ const { data: genres = [] } = useQuery({
       setSearchInput("");
     }
   };
-  
 
   const handleLogout = async () => {
     try {
@@ -155,11 +152,16 @@ const { data: genres = [] } = useQuery({
           </div>
         </div>
 
-          {/* Add mini search bar */}
-          {showMiniSearch && (
-          <form onSubmit={handleMiniSearch} className="hidden md:flex items-center mx-4 flex-1 max-w-md">
-            <div className="search flex items-center justify-between rounded-md overflow-hidden p-1 px-2 shadow-lg 
-            hover:shadow-[0_0_7px_5px_#efc949] transition-shadow duration-300 bg-white w-full">
+        {/* Add mini search bar */}
+        {showMiniSearch && (
+          <form
+            onSubmit={handleMiniSearch}
+            className="hidden md:flex items-center mx-4 flex-1 max-w-md"
+          >
+            <div
+              className="search flex items-center justify-between rounded-md overflow-hidden p-1 px-2 shadow-lg 
+            hover:shadow-[0_0_7px_5px_#efc949] transition-shadow duration-300 bg-white w-full"
+            >
               <input
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
@@ -167,7 +169,10 @@ const { data: genres = [] } = useQuery({
                 placeholder="Quick Search..."
                 className="text-gray-900 rounded-md px-2 py-1 w-full border-none outline-none"
               />
-              <button type="submit" className="cursor-pointer bg-[#d05a49] rounded-md p-1">
+              <button
+                type="submit"
+                className="cursor-pointer bg-[#d05a49] rounded-md p-1"
+              >
                 <img src="/seachmovie.png" alt="" className="w-6 h-6" />
               </button>
             </div>

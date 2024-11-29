@@ -1,4 +1,4 @@
-import newRequest from './newRequest';
+import newRequest from "./newRequest";
 
 export const searchTvByQuery = async (query, page = 1) => {
   const encodedQuery = encodeURIComponent(query);
@@ -10,11 +10,11 @@ export const searchShows = async (page = 1) => {
 };
 
 export const searchFeaturedShows = async () => {
-  return await newRequest.get('/tv/featured');
+  return await newRequest.get("/tv/featured");
 };
 
 export const searchTopRatedShows = async () => {
-  return await newRequest.get('/tv/top-rated');
+  return await newRequest.get("/tv/top-rated");
 };
 
 export const getShowDetails = async (showId) => {
@@ -24,6 +24,3 @@ export const getShowDetails = async (showId) => {
 export const getSeasonDetails = async (showId, seasonNumber) => {
   return await newRequest.get(`/tv/${showId}/season/${seasonNumber}`);
 };
-
-
-

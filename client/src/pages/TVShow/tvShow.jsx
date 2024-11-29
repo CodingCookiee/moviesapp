@@ -9,13 +9,16 @@ const TvShow = () => {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState({});
 
-
-  const { data: show, isLoading, error } = useQuery({
+  const {
+    data: show,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["tvshow", id],
     queryFn: async () => {
       const response = await getShowDetails(id);
       return response.data;
-    }
+    },
   });
 
   if (isLoading) {
@@ -48,11 +51,12 @@ const TvShow = () => {
   }
 
   const trailerVideo = show.videos?.results?.find(
-    (video) => video.type === "Trailer" && video.site === "YouTube"
+    (video) => video.type === "Trailer" && video.site === "YouTube",
   );
   const watchProviders = show["watch/providers"]?.results?.US;
 
-  const seasons = show.seasons?.filter(season => season.season_number !== 0) || [];
+  const seasons =
+    show.seasons?.filter((season) => season.season_number !== 0) || [];
   const genres = show.genres || [];
   const networks = show.networks || [];
 

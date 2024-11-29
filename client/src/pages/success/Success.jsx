@@ -12,42 +12,41 @@ const Success = () => {
   const [emailStatus, setEmailStatus] = useState("");
   const [emailSent, setEmailSent] = useState(false);
 
-
   useEffect(() => {
-      const makeRequest = async () => {
-        try {
-          if (!payment_intent || emailSent) return;
-          
-          const response = await newRequest.put("/orders", { payment_intent });
-          if (response.status === 200) {
-            const orderData = response.data;
-            setOrderDetails({...orderData, orderId: orderData._id});
-  
-            const emailResponse = await newRequest.post("/orders/send-invoice", {
-              orderId: orderData._id,
-              email: email,
-              orderDetails: orderData
-            });
-            
-            if (emailResponse.status === 200) {
-              setEmailStatus("Invoice has been sent to your email!");
-              setEmailSent(true);   
-            }
-            setTimeout(() => {
-              navigate("/orders");
-            }, 5000);
+    const makeRequest = async () => {
+      try {
+        if (!payment_intent || emailSent) return;
+
+        const response = await newRequest.put("/orders", { payment_intent });
+        if (response.status === 200) {
+          const orderData = response.data;
+          setOrderDetails({ ...orderData, orderId: orderData._id });
+
+          const emailResponse = await newRequest.post("/orders/send-invoice", {
+            orderId: orderData._id,
+            email: email,
+            orderDetails: orderData,
+          });
+
+          if (emailResponse.status === 200) {
+            setEmailStatus("Invoice has been sent to your email!");
+            setEmailSent(true);
           }
-        } catch (err) {
-          console.log(err);
-          setEmailStatus("Couldn't send invoice email. Please check your orders page.");
+          setTimeout(() => {
+            navigate("/orders");
+          }, 5000);
         }
-      };  
-      makeRequest();
-    }, [payment_intent, navigate, email, emailSent]);
+      } catch (err) {
+        console.log(err);
+        setEmailStatus(
+          "Couldn't send invoice email. Please check your orders page.",
+        );
+      }
+    };
+    makeRequest();
+  }, [payment_intent, navigate, email, emailSent]);
 
   console.log("Email:", email);
-
-  
 
   return (
     <div className="success flex flex-col items-center justify-center min-h-screen p-8">

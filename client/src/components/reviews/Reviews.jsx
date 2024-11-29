@@ -99,9 +99,9 @@ const Reviews = ({ gigId }) => {
               5
             </option>
           </select>
-          <button 
+          <button
             className={`w-[100px] p-2.5 text-white font-medium border-none text-[18px] cursor-pointer ${
-              isOwner ? 'bg-gray-400' : 'bg-[#1dbf73]'
+              isOwner ? "bg-gray-400" : "bg-[#1dbf73]"
             }`}
             disabled={isOwner}
             title={isOwner ? "Cannot review own gig" : "Send review"}

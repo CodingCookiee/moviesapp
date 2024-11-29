@@ -1,27 +1,38 @@
 import React, { useState } from "react";
 import MovieCard from "../../components/movieCard/movieCard";
 import { useQuery } from "@tanstack/react-query";
-import { searchFeaturedMovies, searchLatestMovies, getMovieDetails } from "../../utils/movieHelper.js";
+import {
+  searchFeaturedMovies,
+  searchLatestMovies,
+  getMovieDetails,
+} from "../../utils/movieHelper.js";
 
 const Top50 = () => {
   const [viewType, setViewType] = useState("grid");
 
-  const { isLoading: featuredLoading, error: featuredError, data: featuredMovies } = useQuery({
-    queryKey: ['top25Featured'],
+  const {
+    isLoading: featuredLoading,
+    error: featuredError,
+    data: featuredMovies,
+  } = useQuery({
+    queryKey: ["top25Featured"],
     queryFn: async () => {
       const response = await searchFeaturedMovies();
       return response.data.results || [];
-    }
+    },
   });
-  
-  const { isLoading: latestLoading, error: latestError, data: latestMovies } = useQuery({
-    queryKey: ['top25Latest'],
+
+  const {
+    isLoading: latestLoading,
+    error: latestError,
+    data: latestMovies,
+  } = useQuery({
+    queryKey: ["top25Latest"],
     queryFn: async () => {
       const response = await searchLatestMovies();
       return response.data.results || [];
-    }
+    },
   });
-  
 
   if (featuredLoading || latestLoading) {
     return (
@@ -35,8 +46,12 @@ const Top50 = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Something went wrong</h2>
-        <p className="text-gray-600">{featuredError?.message || latestError?.message}</p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          Something went wrong
+        </h2>
+        <p className="text-gray-600">
+          {featuredError?.message || latestError?.message}
+        </p>
       </div>
     );
   }
@@ -76,7 +91,9 @@ const Top50 = () => {
           </button>
         </div>
 
-        <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
+        <div
+          className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+        >
           {allMovies.map((movie, index) => (
             <MovieCard
               key={movie.id}

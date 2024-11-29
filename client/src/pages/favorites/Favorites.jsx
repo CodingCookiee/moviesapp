@@ -7,15 +7,18 @@ import newRequest from "../../utils/newRequest";
 const Favorites = () => {
   const [viewType, setViewType] = useState("grid");
 
-
-const { isLoading, error, data: favorites, refetch } = useQuery({
-  queryKey: ['favorites'],
-  queryFn: async () => {
-    const response = await newRequest.get("/favorites");
-    return response.data;
-  }
-});
-
+  const {
+    isLoading,
+    error,
+    data: favorites,
+    refetch,
+  } = useQuery({
+    queryKey: ["favorites"],
+    queryFn: async () => {
+      const response = await newRequest.get("/favorites");
+      return response.data;
+    },
+  });
 
   const handleFavoriteRemove = async (itemId, type) => {
     try {
@@ -37,7 +40,7 @@ const { isLoading, error, data: favorites, refetch } = useQuery({
     );
   }
 
-  if(error){
+  if (error) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
@@ -46,13 +49,13 @@ const { isLoading, error, data: favorites, refetch } = useQuery({
         </h2>
         <p className="text-gray-600">{error.message}</p>
         <button
-        onClick={() => window.location.reload()}
-        className="mt-4 px-4 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500"
+          onClick={() => window.location.reload()}
+          className="mt-4 px-4 py-2 bg-yellow-400 text-white rounded hover:bg-yellow-500"
         >
           Refresh
         </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -101,7 +104,9 @@ const { isLoading, error, data: favorites, refetch } = useQuery({
             </p>
           </div>
         ) : (
-          <div className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}>
+          <div
+            className={`flex flex-wrap ${viewType === "list" ? "flex-col" : ""}`}
+          >
             {favorites.map((favorite) => {
               if (favorite.type === "movie" && favorite.movieData) {
                 return (
@@ -110,7 +115,9 @@ const { isLoading, error, data: favorites, refetch } = useQuery({
                     movie={favorite.movieData}
                     viewType={viewType}
                     isFavorite={true}
-                    onFavoriteToggle={() => handleFavoriteRemove(favorite.movieData.id, "movie")}
+                    onFavoriteToggle={() =>
+                      handleFavoriteRemove(favorite.movieData.id, "movie")
+                    }
                   />
                 );
               }
@@ -121,7 +128,9 @@ const { isLoading, error, data: favorites, refetch } = useQuery({
                     show={favorite.showData}
                     viewType={viewType}
                     isFavorite={true}
-                    onFavoriteToggle={() => handleFavoriteRemove(favorite.showData.id, "show")}
+                    onFavoriteToggle={() =>
+                      handleFavoriteRemove(favorite.showData.id, "show")
+                    }
                   />
                 );
               }

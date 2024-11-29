@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import Hero from "../../components/hero/Hero";
 import Featured from "../../components/Featured/Featured";
 
-const Home = () => { 
-  
+const Home = () => {
   return (
     <div className="home min-h-screen">
       <Hero />

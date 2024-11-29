@@ -14,7 +14,7 @@ export const deleteUser = async (req, res, next) => {
 
     if (req.userId.toString() !== user._id.toString()) {
       return next(
-        createError(403, "You are not authorized to delete this user!")
+        createError(403, "You are not authorized to delete this user!"),
       );
     }
 
@@ -25,7 +25,6 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 };
-
 
 // get user
 export const getUser = async (req, res, next) => {

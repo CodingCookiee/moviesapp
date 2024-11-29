@@ -1,13 +1,11 @@
-import { 
-  searchShows, 
-  searchFeaturedShows, 
+import {
+  searchShows,
+  searchFeaturedShows,
   getShowDetails,
   getSeasonDetails,
   searchTopRatedShows,
-  searchTvByQuery
-} from '../utils/tvApi.js';
-
-
+  searchTvByQuery,
+} from "../utils/tvApi.js";
 
 export const getTvByQuery = async (req, res, next) => {
   try {
@@ -72,5 +70,3 @@ export const getShowSeasonDetails = async (req, res, next) => {
     next(err);
   }
 };
-
-

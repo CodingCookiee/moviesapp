@@ -13,7 +13,6 @@ const Review = ({ review }) => {
   });
 
   return (
-    
     <div className="review pb-5">
       <div className="item flex flex-col gap-5 mb-5 ml-0 mr-0">
         {isLoading ? (
@@ -63,7 +62,6 @@ const Review = ({ review }) => {
       </div>
       <hr className="h-0 m-[50px] ml-0 mr-0 border-[0.5px] border-solid border-[lightgrey]" />
     </div>
-    
   );
 };
 

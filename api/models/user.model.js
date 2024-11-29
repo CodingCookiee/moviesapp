@@ -27,7 +27,7 @@ const userSchema = new Schema(
     },
     phone: {
       type: String,
-      required:false,
+      required: false,
     },
     desc: {
       type: String,
@@ -38,7 +38,7 @@ const userSchema = new Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 const User = mongoose.model("User", userSchema);
 export default User;

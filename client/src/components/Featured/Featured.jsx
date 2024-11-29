@@ -14,7 +14,6 @@ import {
 const Featured = () => {
   const [viewType, setViewType] = useState("grid");
 
-
   const featuredMoviesQuery = useQuery({
     queryKey: ["featuredMovies"],
     queryFn: async () => {

@@ -8,12 +8,16 @@ const Movie = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data: movie, isLoading, error } = useQuery({
+  const {
+    data: movie,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["movie", id],
     queryFn: async () => {
       const response = await getMovieDetails(id);
       return response.data;
-    }
+    },
   });
 
   if (isLoading) {
@@ -46,9 +50,8 @@ const Movie = () => {
   }
 
   const trailerVideo = movie?.videos?.results?.find(
-    video => video.type === "Trailer" && video.site === "YouTube"
+    (video) => video.type === "Trailer" && video.site === "YouTube",
   );
-
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -162,7 +165,9 @@ const Movie = () => {
         <div className="flex items-center gap-12 ml-4 mb-6">
           <h1 className="text-lg font-light ">Vote Count: </h1>
           <div className="flex items-center bg-black/10 px-3 py-1 rounded ml-14">
-            <span className="text-slate-600 font-bold ">{movie.vote_count}</span>
+            <span className="text-slate-600 font-bold ">
+              {movie.vote_count}
+            </span>
             <span className="text-slate-600 font-bold ml-2"> votes</span>
           </div>
         </div>

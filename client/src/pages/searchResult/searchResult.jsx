@@ -30,25 +30,28 @@ const SearchResult = () => {
     enabled: Boolean(searchQuery) && activeTab === "tv",
   });
 
-  const filteredMovieResults = movieQuery.data?.results?.filter(movie => 
-    movie.poster_path && 
-    movie.overview && 
-    movie.vote_count >= 200 &&
-    movie.vote_average >= 6 &&
-    !movie.adult 
-    
-  ) || [];
+  const filteredMovieResults =
+    movieQuery.data?.results?.filter(
+      (movie) =>
+        movie.poster_path &&
+        movie.overview &&
+        movie.vote_count >= 200 &&
+        movie.vote_average >= 6 &&
+        !movie.adult,
+    ) || [];
 
-  const filteredTvResults = tvQuery.data?.results?.filter(show => 
-    show.poster_path && 
-    show.overview && 
-    show.vote_count >= 200 &&
-    show.vote_average >= 6 &&
-    !show.adult 
-    
-  ) || [];
+  const filteredTvResults =
+    tvQuery.data?.results?.filter(
+      (show) =>
+        show.poster_path &&
+        show.overview &&
+        show.vote_count >= 200 &&
+        show.vote_average >= 6 &&
+        !show.adult,
+    ) || [];
 
-  const currentResults = activeTab === "movies" ? filteredMovieResults : filteredTvResults;
+  const currentResults =
+    activeTab === "movies" ? filteredMovieResults : filteredTvResults;
   const totalPages = Math.ceil(currentResults.length / 20);
 
   if (movieQuery.isLoading || tvQuery.isLoading) {
@@ -98,37 +101,40 @@ const SearchResult = () => {
       {!currentResults?.length ? (
         <div className="text-center py-12">
           <h2 className="text-xl text-gray-600">
-            No {activeTab === "movies" ? "movies" : "TV shows"} found for "{searchQuery}"
+            No {activeTab === "movies" ? "movies" : "TV shows"} found for "
+            {searchQuery}"
           </h2>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
-            {activeTab === "movies" && filteredMovieResults.map(movie => (
-              <div className="h-full" key={movie.id}>
-                <MovieCard
-                  movie={movie}
-                  viewType="grid"
-                  className="h-full flex flex-col"
-                />
-              </div>
-            ))}
-            
-            {activeTab === "tv" && filteredTvResults.map(show => (
-              <div className="h-full" key={show.id}>
-                <TvShowCard
-                  show={show}
-                  viewType="grid"
-                  className="h-full flex flex-col"
-                />
-              </div>
-            ))}
+            {activeTab === "movies" &&
+              filteredMovieResults.map((movie) => (
+                <div className="h-full" key={movie.id}>
+                  <MovieCard
+                    movie={movie}
+                    viewType="grid"
+                    className="h-full flex flex-col"
+                  />
+                </div>
+              ))}
+
+            {activeTab === "tv" &&
+              filteredTvResults.map((show) => (
+                <div className="h-full" key={show.id}>
+                  <TvShowCard
+                    show={show}
+                    viewType="grid"
+                    className="h-full flex flex-col"
+                  />
+                </div>
+              ))}
           </div>
 
           {totalPages > 1 && (
             <div className="flex justify-center items-center gap-2 mt-8">
               <button
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
               >
@@ -140,7 +146,9 @@ const SearchResult = () => {
               </span>
 
               <button
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
                 disabled={currentPage === totalPages}
                 className="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50"
               >
