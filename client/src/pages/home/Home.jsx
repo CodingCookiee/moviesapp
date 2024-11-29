@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Hero from "../../components/hero/Hero";
 import Featured from "../../components/Featured/Featured";
+import Hero from "../../components/Hero/Hero";
+
 
 const Home = () => {
   return (
