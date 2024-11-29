@@ -102,13 +102,25 @@ export const getGenres = async () => {
 };
 
 export const searchMoviesByGenre = async (genreId, page = 1) => {
-  const url = `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&language=en-US&sort_by=popularity.desc&page=${page}&include_adult=false`;
+  const baseUrl = `https://api.themoviedb.org/3/discover/movie`;
+  const params = new URLSearchParams({
+    with_genres: genreId,
+    language: 'en-US',
+    sort_by: 'vote_average.desc,popularity.desc',
+    page: page.toString(),
+    include_adult: 'false',
+    'vote_count.gte': '200',
+    'vote_average.gte': '6',
+    'with_runtime.gte': '60',
+  });
+
+  const url = `${baseUrl}?${params.toString()}`;
   const options = {
     method: "GET",
     headers: {
       accept: "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
+      Authorization: `Bearer ${accessToken}`
+    }
   };
   return fetch(url, options);
 };

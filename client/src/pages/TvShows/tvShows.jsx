@@ -39,8 +39,7 @@ const TvShows = () => {
       };
     },
   });
-
-  console.log(allShowsData);
+ 
 
   if (featuredLoading) {
     return (

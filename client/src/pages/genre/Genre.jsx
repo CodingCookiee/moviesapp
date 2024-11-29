@@ -145,7 +145,7 @@ const Genre = () => {
                     viewType={viewType}
                     isFeatured={false}
                   />
-                ))}
+                ))} 
               </div>
               {/* Pagination */}
               <div className="flex justify-center items-center gap-2 my-8">
