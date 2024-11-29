@@ -76,7 +76,7 @@ const TvShow = () => {
         <div className="min-h-full mb-32 p-16 flex flex-col items-center justify-center">
           <img src="/movie-error.png" alt="Error" className="w-32 h-32 mb-6" />
           <h2 className="text-3xl font-bold mb-4 text-gray-800 ">
-            Preview Not Available
+            Trailer Not Available
           </h2>
         </div>
       )}
