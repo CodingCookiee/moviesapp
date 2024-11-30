@@ -16,5 +16,6 @@
  - Cloudinary
  - Pagination & Search Filters 
  - TMBD Api
+ - Vercel & Railway App
    
    
