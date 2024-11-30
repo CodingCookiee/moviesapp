@@ -113,8 +113,8 @@ const Movies = () => {
 
         {/* All Movies */}
         <div>
-          <div className="flex items-center gap-2.5 ml-4 mb-6">
-            <div className="h-[40px] bg-yellow-400 w-[10px]"></div>
+          <div className="flex flex-col items-center justify-center gap-2.5 ml-4 mb-6">
+            <img src='/shuffle.png' alt='' className="w-20 h-20" />
             <h2 className="text-2xl font-bold">Movie Night</h2>
           </div>
 
