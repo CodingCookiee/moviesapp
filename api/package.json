@@ -4,7 +4,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
+     "start": "node --watch --env-file=.env server.js",
     "lint": "eslint . --fix",
     "format": "prettier --write \"**/*.{js,jsx}\""
   },
