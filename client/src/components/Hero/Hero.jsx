@@ -52,15 +52,14 @@ const Hero = () => {
       <div className="flex flex-col gap-4 md:gap-2.5 w-full md:w-4/5 px-4">
         <h1 className="text-2xl md:text-4xl font-semibold text-center">
           <span className="text-yellow-400 hover:text-[#efc949]">Panda</span>
-          Play – The Best Place to Watch <i>
+          Play – The Best Place to Find <i>
             Free Movies
           </i> and <i>TVShows</i> Online
         </h1>
 
         <p className="text-base md:text-lg text-center leading-relaxed md:leading-7">
           Movie and TVShow fans now have a place, where they can find all their
-          favorite flicks. Would you like to get an exclusive access to all the
-          major blockbusters of the recent years? Everybody wants to see a great
+          favorite flicks. Everybody wants to see a great
           movie with his friends and family every once in a while and{" "}
           <span className="text-yellow-400 hover:text-[#efc949]">Panda</span>
           Play is the exact place for that! Start by Searching or by Navigating
