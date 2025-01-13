@@ -61,7 +61,7 @@ const Footer = () => {
             <span className="text-yellow-400">Panda</span>Play
           </h2>
           <p className="text-sm text-[#555] self-start text-justify w-full md:w-[300px]">
-            OnionPlay does not store any files itself, we only link to media
+            Pandaplay does not store any files itself, we only link to media
             which is hosted on 3rd party services. PandaPlay is ADS-FREE and
             always will Be, Be Aware of clones or fake copies!
           </p>
